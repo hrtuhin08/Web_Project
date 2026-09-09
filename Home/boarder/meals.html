@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meal Management &amp; Toggles | Resident Student - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .meal-toggle-btn {
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+    .meal-toggle-btn.on {
+      background: #dcfce7;
+      color: #166534;
+      border-color: #86efac;
+    }
+    .meal-toggle-btn.off {
+      background: #fee2e2;
+      color: #991b1b;
+      border-color: #fca5a5;
+    }
+    .meal-toggle-btn.locked {
+      background: #f1f5f9;
+      color: #94a3b8;
+      border-color: #e2e8f0;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>BOARDER</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">🏠</span> Student Portal</a>
+        <a href="profile.html" class="sidebar-link"><span class="sidebar-icon">👤</span> My Profile</a>
+
+        <div class="nav-category">Residence</div>
+        <a href="room.html" class="sidebar-link"><span class="sidebar-icon">🛏️</span> My Room &amp; Roommates</a>
+        <a href="applications.html" class="sidebar-link"><span class="sidebar-icon">📝</span> Leave &amp; Seat Requests</a>
+
+        <div class="nav-category">Dining &amp; Finance</div>
+        <a href="meals.html" class="sidebar-link active"><span class="sidebar-icon">🍲</span> Meal Management</a>
+        <a href="payments.html" class="sidebar-link"><span class="sidebar-icon">💳</span> Invoices &amp; Payments</a>
+
+        <div class="nav-category">Support &amp; Updates</div>
+        <a href="complaints.html" class="sidebar-link"><span class="sidebar-icon">⚠️</span> Complaints &amp; Repair</a>
+        <a href="notices.html" class="sidebar-link"><span class="sidebar-icon">📢</span> Notice Board</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">FR</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Fahim Rahman</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">BOARDER (011211045)</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Dining Automation &amp; Meal Preferences</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-outline btn-sm" onclick="HMS.openModal('bulkMealModal')">🏖️ Holiday Meal Freeze</button>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <!-- Cutoff Policy Alert Banner -->
+        <div style="background: #eff6ff; border-left: 4px solid var(--primary); padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="font-size: 1.2rem;">⏰</span>
+              <strong style="font-size: 1rem; color: var(--primary-dark);">Daily 9:00 PM Automated Cutoff Rule</strong>
+            </div>
+            <p style="margin: 0.25rem 0 0 0; font-size: 0.88rem; color: #1e3a8a;">
+              To prevent kitchen food waste, meal choices for the next day lock strictly at 9:00 PM tonight. Any toggles made before 9:00 PM are saved immediately.
+            </p>
+          </div>
+          <div>
+            <span class="badge badge-primary" style="font-size: 0.88rem; padding: 0.4rem 0.8rem;">Current Rate: ৳ 85 / Meal</span>
+          </div>
+        </div>
+
+        <!-- Metric Pulse -->
+        <div class="stats-grid-dashboard">
+          <div class="stat-card">
+            <div class="stat-icon primary">🍽️</div>
+            <div class="stat-meta">
+              <h3 id="statMealsCount">54 Meals</h3>
+              <p>Consumed This Month</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon info">💵</div>
+            <div class="stat-meta">
+              <h3 id="statDiningCost">৳ 4,590</h3>
+              <p>Billed Dining Total</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon success">🛡️</div>
+            <div class="stat-meta">
+              <h3>12 Meals</h3>
+              <p>Opted OUT (৳ 1,020 Saved)</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon warning">📅</div>
+            <div class="stat-meta">
+              <h3>September 2026</h3>
+              <p>Active Billing Cycle</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7-Day Meal Scheduler -->
+        <div class="card" style="margin-top: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <div>
+              <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.2rem;">7-Day Meal Preference Planner</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">Click on any meal button below to toggle attendance ON or OFF.</p>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="saveAllPreferences()">Save All Toggles</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="mealPlannerTable">
+              <thead>
+                <tr>
+                  <th>Date &amp; Day</th>
+                  <th>Breakfast (🍳)</th>
+                  <th>Lunch (🍲)</th>
+                  <th>Dinner (🍛)</th>
+                  <th>Estimated Cost</th>
+                  <th>Lock Status</th>
+                </tr>
+              </thead>
+              <tbody id="mealPlannerBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Weekly Food Menu Reference -->
+        <div class="card" style="margin-top: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="font-size: 1.05rem; font-weight: 700;">Hostel Central Mess Menu (7-Day Rotating Schedule)</h3>
+            <span class="badge badge-secondary">Fall 2026 Standard</span>
+          </div>
+          <div class="table-responsive">
+            <table class="table" style="margin: 0;">
+              <thead>
+                <tr>
+                  <th>Day</th>
+                  <th>Breakfast (7:30 - 9:30 AM)</th>
+                  <th>Lunch (12:30 - 3:00 PM)</th>
+                  <th>Dinner (8:00 - 10:00 PM)</th>
+                </tr>
+              </thead>
+              <tbody id="menuReferenceBody">
+                <!-- Dynamically loaded from script.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Bulk Holiday Meal Freeze Modal -->
+  <div class="modal-overlay" id="bulkMealModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Bulk Holiday Meal Freeze</h3>
+        <button class="modal-close" onclick="HMS.closeModal('bulkMealModal')">&times;</button>
+      </div>
+      <form id="bulkFreezeForm">
+        <div class="modal-body">
+          <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1rem;">
+            Traveling home for the weekend or semester vacation? Select your absence dates to turn off all breakfast, lunch, and dinner bookings simultaneously.
+          </p>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Leave Start Date <span class="required">*</span></label>
+              <input type="date" id="freeze_start" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Return Date <span class="required">*</span></label>
+              <input type="date" id="freeze_end" class="form-control" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Reason / Destination</label>
+            <input type="text" id="freeze_reason" class="form-control" placeholder="e.g. Going home to Chattogram for Eid / Weekend">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="HMS.closeModal('bulkMealModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Confirm Meal Freeze</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    // State of 7 days meals
+    const daysData = [
+      { dayName: 'Today (Thu)', date: '10 Sep 2026', b: true, l: true, d: true, locked: true },
+      { dayName: 'Tomorrow (Fri)', date: '11 Sep 2026', b: true, l: true, d: true, locked: false },
+      { dayName: 'Saturday', date: '12 Sep 2026', b: true, l: false, d: true, locked: false },
+      { dayName: 'Sunday', date: '13 Sep 2026', b: true, l: true, d: true, locked: false },
+      { dayName: 'Monday', date: '14 Sep 2026', b: true, l: true, d: true, locked: false },
+      { dayName: 'Tuesday', date: '15 Sep 2026', b: false, l: true, d: true, locked: false },
+      { dayName: 'Wednesday', date: '16 Sep 2026', b: true, l: true, d: true, locked: false }
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+      renderDays();
+      renderWeeklyMenu();
+
+      document.getElementById('bulkFreezeForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const start = document.getElementById('freeze_start').value;
+        const end = document.getElementById('freeze_end').value;
+        HMS.closeModal('bulkMealModal');
+        HMS.showToast(`Meals frozen successfully from ${start} to ${end}. No charges will be incurred!`, 'success');
+        this.reset();
+      });
+    });
+
+    function renderDays() {
+      const tbody = document.getElementById('mealPlannerBody');
+      tbody.innerHTML = daysData.map((d, index) => {
+        const count = (d.b ? 1 : 0) + (d.l ? 1 : 0) + (d.d ? 1 : 0);
+        const cost = count * 85;
+        return `
+          <tr>
+            <td>
+              <strong>${d.dayName}</strong>
+              <div style="font-size: 0.78rem; color: var(--text-muted);">${d.date}</div>
+            </td>
+            <td>
+              <button class="meal-toggle-btn ${d.locked ? 'locked' : (d.b ? 'on' : 'off')}" onclick="toggleMealSlot(${index}, 'b')">
+                ${d.b ? '✓ ON' : '✕ OFF'}
+              </button>
+            </td>
+            <td>
+              <button class="meal-toggle-btn ${d.locked ? 'locked' : (d.l ? 'on' : 'off')}" onclick="toggleMealSlot(${index}, 'l')">
+                ${d.l ? '✓ ON' : '✕ OFF'}
+              </button>
+            </td>
+            <td>
+              <button class="meal-toggle-btn ${d.locked ? 'locked' : (d.d ? 'on' : 'off')}" onclick="toggleMealSlot(${index}, 'd')">
+                ${d.d ? '✓ ON' : '✕ OFF'}
+              </button>
+            </td>
+            <td class="font-mono"><strong>৳ ${cost}</strong> <span style="font-size: 0.75rem; color: var(--text-muted);">(${count} meals)</span></td>
+            <td>
+              ${d.locked ? `
+                <span class="badge badge-secondary">🔒 Locked (Past 9PM)</span>
+              ` : `
+                <span class="badge badge-success">🔓 Open to Edit</span>
+              `}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function toggleMealSlot(index, slot) {
+      if (daysData[index].locked) {
+        HMS.showToast("Today's roster is locked past 9:00 PM cutoff!", "warning");
+        return;
+      }
+      daysData[index][slot] = !daysData[index][slot];
+      renderDays();
+    }
+
+    function saveAllPreferences() {
+      HMS.showToast("Your 7-day meal preferences have been synchronized with the Central Mess!", "success");
+    }
+
+    function renderWeeklyMenu() {
+      const menu = HMS.get('weeklyMenu') || [];
+      const tbody = document.getElementById('menuReferenceBody');
+      tbody.innerHTML = menu.map(m => `
+        <tr>
+          <td><strong>${m.day}</strong></td>
+          <td>${m.breakfast}</td>
+          <td>${m.lunch}</td>
+          <td>${m.dinner}</td>
+        </tr>
+      `).join('');
+    }
+  </script>
+</body>
+</html>

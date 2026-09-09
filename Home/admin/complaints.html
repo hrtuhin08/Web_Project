@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complaints &amp; Maintenance | Admin Panel - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>ADMIN</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">📊</span> Overview</a>
+
+        <div class="nav-category">Accommodations</div>
+        <a href="boarders.html" class="sidebar-link"><span class="sidebar-icon">👥</span> Boarder Directory</a>
+        <a href="rooms.html" class="sidebar-link"><span class="sidebar-icon">🛏️</span> Room &amp; Bed Matrix</a>
+        <a href="applications.html" class="sidebar-link"><span class="sidebar-icon">📝</span> Seat Applications</a>
+
+        <div class="nav-category">Operations</div>
+        <a href="payments.html" class="sidebar-link"><span class="sidebar-icon">💳</span> Fee &amp; Billing</a>
+        <a href="complaints.html" class="sidebar-link active"><span class="sidebar-icon">⚠️</span> Complaints</a>
+        <a href="notices.html" class="sidebar-link"><span class="sidebar-icon">📢</span> Notice Board</a>
+
+        <div class="nav-category">Administration</div>
+        <a href="users.html" class="sidebar-link"><span class="sidebar-icon">🛡️</span> User Management</a>
+        <a href="reports.html" class="sidebar-link"><span class="sidebar-icon">📈</span> Reports &amp; Analytics</a>
+        <a href="settings.html" class="sidebar-link"><span class="sidebar-icon">⚙️</span> Settings</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">AD</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Admin User</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">ADMINISTRATOR</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Issue Tracking &amp; Maintenance</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-primary btn-sm" onclick="HMS.openModal('addComplaintModal')">+ Log New Issue</button>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Maintenance &amp; Student Grievances</h1>
+            <p class="page-desc">Track and resolve student repair requests, plumbing, electrical, optical fiber, and dining issues.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-toolbar">
+            <div class="search-input-group">
+              <span class="icon">🔍</span>
+              <input type="text" id="cmpSearch" class="form-control" placeholder="Search complaint, student, room...">
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <select id="cmpStatusFilter" class="form-control" style="width: 160px;">
+                <option value="">All Statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="complaintsTable">
+              <thead>
+                <tr>
+                  <th>Ticket ID</th>
+                  <th>Student Name</th>
+                  <th>Room</th>
+                  <th>Category</th>
+                  <th>Issue Subject</th>
+                  <th>Priority</th>
+                  <th>Reported Date</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="complaintsTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Log Complaint Modal -->
+  <div class="modal-overlay" id="addComplaintModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Log Maintenance Ticket</h3>
+        <button class="modal-close" onclick="HMS.closeModal('addComplaintModal')">&times;</button>
+      </div>
+      <form id="addComplaintForm">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Student Name <span class="required">*</span></label>
+              <input type="text" id="cmp_name" class="form-control" required placeholder="Student Name">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Room Number <span class="required">*</span></label>
+              <input type="text" id="cmp_room" class="form-control" required placeholder="e.g. A-302">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Category <span class="required">*</span></label>
+              <select id="cmp_cat" class="form-control" required>
+                <option value="Electrical">Electrical</option>
+                <option value="Plumbing">Plumbing / Sanitary</option>
+                <option value="Wi-Fi">Wi-Fi &amp; Internet</option>
+                <option value="Dining/Mess">Dining / Mess</option>
+                <option value="Carpentry">Carpentry &amp; Furniture</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Priority</label>
+              <select id="cmp_priority" class="form-control">
+                <option value="Low">Low</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="High">High (Urgent)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Subject / Description <span class="required">*</span></label>
+            <textarea id="cmp_desc" class="form-control" rows="3" required placeholder="Details of the fault or maintenance issue..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="HMS.closeModal('addComplaintModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Submit Ticket</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+      renderComplaints();
+
+      HMS.filterTable('cmpSearch', 'complaintsTable');
+
+      document.getElementById('cmpStatusFilter').addEventListener('change', function () {
+        const val = this.value.toLowerCase();
+        document.querySelectorAll('#complaintsTableBody tr').forEach(r => {
+          const st = r.getAttribute('data-status');
+          r.style.display = (!val || st === val) ? '' : 'none';
+        });
+      });
+
+      document.getElementById('addComplaintForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const complaints = HMS.get('complaints') || [];
+        const newC = {
+          id: 'CMP-' + Math.floor(200 + Math.random() * 800),
+          studentName: document.getElementById('cmp_name').value.trim(),
+          room: document.getElementById('cmp_room').value.trim(),
+          category: document.getElementById('cmp_cat').value,
+          subject: document.getElementById('cmp_desc').value.trim(),
+          priority: document.getElementById('cmp_priority').value,
+          date: new Date().toISOString().split('T')[0],
+          status: 'Pending'
+        };
+        complaints.unshift(newC);
+        HMS.set('complaints', complaints);
+        HMS.closeModal('addComplaintModal');
+        HMS.showToast('Ticket ' + newC.id + ' logged successfully!', 'success');
+        this.reset();
+        renderComplaints();
+      });
+    });
+
+    function renderComplaints() {
+      const complaints = HMS.get('complaints') || [];
+      const tbody = document.getElementById('complaintsTableBody');
+      tbody.innerHTML = complaints.map(c => `
+        <tr data-status="${c.status.toLowerCase()}">
+          <td class="font-mono"><strong>${c.id}</strong></td>
+          <td><strong>${c.studentName}</strong></td>
+          <td><span class="badge badge-secondary">${c.room}</span></td>
+          <td>${c.category}</td>
+          <td>${c.subject}</td>
+          <td>
+            <span class="badge ${c.priority === 'High' ? 'badge-danger' : c.priority === 'Medium' ? 'badge-warning' : 'badge-info'}">
+              ${c.priority}
+            </span>
+          </td>
+          <td class="font-mono">${c.date}</td>
+          <td>
+            <span class="badge ${c.status === 'Resolved' ? 'badge-success' : c.status === 'In Progress' ? 'badge-info' : 'badge-warning'}">
+              ${c.status}
+            </span>
+          </td>
+          <td>
+            ${c.status !== 'Resolved' ? `
+              <button class="btn btn-success btn-sm" onclick="resolveTicket('${c.id}')">Resolve</button>
+            ` : `
+              <span style="font-size: 0.82rem; color: var(--success); font-weight: 600;">✓ Closed</span>
+            `}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function resolveTicket(id) {
+      let complaints = HMS.get('complaints') || [];
+      complaints = complaints.map(c => {
+        if (c.id === id) c.status = 'Resolved';
+        return c;
+      });
+      HMS.set('complaints', complaints);
+      HMS.showToast('Ticket ' + id + ' resolved!', 'success');
+      renderComplaints();
+    }
+  </script>
+</body>
+</html>

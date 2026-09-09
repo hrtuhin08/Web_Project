@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard | UIU Hostel Management System</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>BOARDER</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link active"><span class="sidebar-icon">🏠</span> Student Portal</a>
+        <a href="profile.html" class="sidebar-link"><span class="sidebar-icon">👤</span> My Profile</a>
+
+        <div class="nav-category">Residence</div>
+        <a href="room.html" class="sidebar-link"><span class="sidebar-icon">🛏️</span> My Room &amp; Roommates</a>
+        <a href="applications.html" class="sidebar-link"><span class="sidebar-icon">📝</span> Leave &amp; Seat Requests</a>
+
+        <div class="nav-category">Dining &amp; Finance</div>
+        <a href="meals.html" class="sidebar-link"><span class="sidebar-icon">🍲</span> Meal Management</a>
+        <a href="payments.html" class="sidebar-link"><span class="sidebar-icon">💳</span> Invoices &amp; Payments</a>
+
+        <div class="nav-category">Support &amp; Updates</div>
+        <a href="complaints.html" class="sidebar-link"><span class="sidebar-icon">⚠️</span> Complaints &amp; Repair</a>
+        <a href="notices.html" class="sidebar-link"><span class="sidebar-icon">📢</span> Notice Board</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">FR</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Fahim Rahman</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">BOARDER (011211045)</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Resident Student Portal</h2>
+        </div>
+        <div class="topbar-right">
+          <a href="meals.html" class="btn btn-primary btn-sm">Meal Preferences</a>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <!-- Hero Welcome Banner -->
+        <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #fff; padding: 2rem; border-radius: var(--radius-lg); margin-bottom: 2rem; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+              <span class="badge badge-success">Active Resident</span>
+              <span style="color: #94a3b8; font-size: 0.88rem; font-family: var(--font-mono);">ID: 011211045</span>
+            </div>
+            <h1 style="font-size: 1.85rem; font-weight: 800; color: #fff; margin-bottom: 0.35rem;">Welcome back, <span class="user-name-display">Fahim Rahman</span>!</h1>
+            <p style="color: #cbd5e1; font-size: 0.95rem; margin: 0;">Department of Computer Science &amp; Engineering | Fall 2026</p>
+          </div>
+          <div style="display: flex; gap: 0.75rem;">
+            <a href="complaints.html" class="btn btn-outline" style="border-color: #475569; color: #f1f5f9;">Report Fault</a>
+            <a href="payments.html" class="btn btn-primary">Pay Dues</a>
+          </div>
+        </div>
+
+        <!-- Metric Pulse Cards -->
+        <div class="stats-grid-dashboard">
+          <div class="stat-card">
+            <div class="stat-icon primary">🛏️</div>
+            <div class="stat-meta">
+              <h3>Padma A-302</h3>
+              <p>Bed #1 (Double Suite)</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon success">🍽️</div>
+            <div class="stat-meta">
+              <h3 id="boarderTodayMealStatus">Active (3/3)</h3>
+              <p>Today's Meals: B, L, D</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon warning">💳</div>
+            <div class="stat-meta">
+              <h3 id="boarderDuesDisplay">৳ 0.00</h3>
+              <p>Outstanding Balance</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon info">⚠️</div>
+            <div class="stat-meta">
+              <h3 id="boarderTicketsDisplay">1 Active</h3>
+              <p>Ceiling Fan Maintenance</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Access Section -->
+        <div style="margin: 2rem 0;">
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem;">Quick Resident Actions</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <a href="meals.html" class="card" style="padding: 1.25rem; display: flex; align-items: center; gap: 1rem; text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s;">
+              <div style="font-size: 2rem; background: #e0f2fe; width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">🍲</div>
+              <div>
+                <strong style="display: block; font-size: 0.95rem;">Meal Switcher</strong>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Lock before 9:00 PM</span>
+              </div>
+            </a>
+            <a href="payments.html" class="card" style="padding: 1.25rem; display: flex; align-items: center; gap: 1rem; text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s;">
+              <div style="font-size: 2rem; background: #dcfce7; width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">💳</div>
+              <div>
+                <strong style="display: block; font-size: 0.95rem;">Fee Payment</strong>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">bKash &amp; Nagad portal</span>
+              </div>
+            </a>
+            <a href="complaints.html" class="card" style="padding: 1.25rem; display: flex; align-items: center; gap: 1rem; text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s;">
+              <div style="font-size: 2rem; background: #fee2e2; width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">🛠️</div>
+              <div>
+                <strong style="display: block; font-size: 0.95rem;">File Complaint</strong>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Plumbing, Wi-Fi, electricity</span>
+              </div>
+            </a>
+            <a href="applications.html" class="card" style="padding: 1.25rem; display: flex; align-items: center; gap: 1rem; text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s;">
+              <div style="font-size: 2rem; background: #fef3c7; width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">📜</div>
+              <div>
+                <strong style="display: block; font-size: 0.95rem;">Leave Application</strong>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Weekend &amp; night pass</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Two Column Layout: Meal Toggles + Roommates -->
+        <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.5rem;">
+          <!-- Meal Toggles Widget -->
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+              <div>
+                <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.2rem;">Tomorrow's Meal Preference</h3>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Auto-lock everyday strictly at 9:00 PM</span>
+              </div>
+              <span class="badge badge-warning" id="countdownBadge">Cutoff: 9:00 PM</span>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              <!-- Breakfast -->
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--bg-main); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                  <span style="font-size: 1.75rem;">🍳</span>
+                  <div>
+                    <strong style="display: block; font-size: 0.95rem;">Breakfast</strong>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">Paratha, Daal Butter, Boiled Egg, Tea</span>
+                  </div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="tomorrowBreakfast" checked onchange="toggleMeal('Breakfast', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <!-- Lunch -->
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--bg-main); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                  <span style="font-size: 1.75rem;">🍲</span>
+                  <div>
+                    <strong style="display: block; font-size: 0.95rem;">Lunch (Standard Feast)</strong>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">Fine Rice, Katla Fish Curry, Mixed Veg, Daal</span>
+                  </div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="tomorrowLunch" checked onchange="toggleMeal('Lunch', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <!-- Dinner -->
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--bg-main); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                  <span style="font-size: 1.75rem;">🍛</span>
+                  <div>
+                    <strong style="display: block; font-size: 0.95rem;">Dinner</strong>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">Steamed Rice, Desi Chicken Curry, Salad, Daal</span>
+                  </div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="tomorrowDinner" checked onchange="toggleMeal('Dinner', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div style="margin-top: 1rem; padding: 0.75rem; background: #e0f2fe; border-radius: var(--radius-md); font-size: 0.82rem; color: #0369a1; display: flex; align-items: center; gap: 0.5rem;">
+              <span>ℹ️</span> Need to cancel meals during holiday leaves? Please toggle off before 9:00 PM prior night to avoid meal charges.
+            </div>
+          </div>
+
+          <!-- Room & Roommate Info -->
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+              <h3 style="font-size: 1.05rem; font-weight: 700;">My Roommates</h3>
+              <a href="room.html" style="font-size: 0.82rem; color: var(--primary); font-weight: 600; text-decoration: none;">View Room Details &rarr;</a>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--bg-main); border-radius: var(--radius-md);">
+                <div class="user-avatar" style="background: var(--primary); color: #fff;">FR</div>
+                <div style="flex: 1;">
+                  <strong style="display: block; font-size: 0.9rem;">Fahim Rahman (You)</strong>
+                  <span style="font-size: 0.78rem; color: var(--text-muted);">Bed 1 &bull; CSE &bull; 011211045</span>
+                </div>
+                <span class="badge badge-success">You</span>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--bg-main); border-radius: var(--radius-md);">
+                <div class="user-avatar" style="background: #6366f1; color: #fff;">TH</div>
+                <div style="flex: 1;">
+                  <strong style="display: block; font-size: 0.9rem;">Tanvir Hossain</strong>
+                  <span style="font-size: 0.78rem; color: var(--text-muted);">Bed 2 &bull; BBA &bull; 011212012</span>
+                </div>
+                <span class="badge badge-secondary">+8801711889900</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+              <h4 style="font-size: 0.88rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-secondary);">Hostel Warden on Duty</h4>
+              <div style="font-size: 0.85rem; color: var(--text-main);">
+                <strong>Mr. Kabir Ahmed</strong> (Hostel Manager)<br>
+                <span style="color: var(--text-muted);">Phone: +8801811223344 &bull; Office: Wing A, Ground Floor</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Latest Notices Snippet -->
+        <div class="card" style="margin-top: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="font-size: 1.05rem; font-weight: 700;">Hostel Announcements</h3>
+            <a href="notices.html" style="font-size: 0.82rem; color: var(--primary); font-weight: 600; text-decoration: none;">View All Notices &rarr;</a>
+          </div>
+          <div id="boarderRecentNotices" style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <style>
+    /* Toggle Switch Component */
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+    }
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #cbd5e1;
+      transition: .3s;
+      border-radius: 26px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+  </style>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+      renderBoarderData();
+    });
+
+    function renderBoarderData() {
+      // Dues
+      const payments = HMS.get('payments') || [];
+      const userDues = payments.filter(p => p.studentId === '011211045' && p.status === 'Due');
+      const totalDue = userDues.reduce((acc, curr) => acc + curr.amount, 0);
+      document.getElementById('boarderDuesDisplay').textContent = '৳ ' + totalDue.toLocaleString();
+
+      // Complaints
+      const complaints = HMS.get('complaints') || [];
+      const userC = complaints.filter(c => c.studentName === 'Fahim Rahman' && c.status !== 'Resolved');
+      document.getElementById('boarderTicketsDisplay').textContent = userC.length + ' Active';
+
+      // Notices
+      const notices = HMS.get('notices') || [];
+      const container = document.getElementById('boarderRecentNotices');
+      container.innerHTML = notices.slice(0, 3).map(n => `
+        <div style="padding: 0.85rem; border-left: 3px solid ${n.priority === 'Urgent' ? 'var(--danger)' : 'var(--primary)'}; background: var(--bg-main); border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <strong style="font-size: 0.92rem; color: var(--text-main); display: block;">${n.title}</strong>
+            <span style="font-size: 0.78rem; color: var(--text-muted);">${n.author} &bull; ${n.date}</span>
+          </div>
+          <span class="badge ${n.priority === 'Urgent' ? 'badge-danger' : 'badge-info'}">${n.priority}</span>
+        </div>
+      `).join('');
+    }
+
+    function toggleMeal(mealType, isEnabled) {
+      HMS.showToast(mealType + ' for tomorrow is now ' + (isEnabled ? 'ON' : 'OFF'), isEnabled ? 'success' : 'warning');
+    }
+  </script>
+</body>
+</html>

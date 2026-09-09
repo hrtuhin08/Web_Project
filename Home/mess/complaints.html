@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Quality &amp; Dining Complaints | Mess Staff - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>MESS</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">📊</span> Mess Overview</a>
+
+        <div class="nav-category">Dining Operations</div>
+        <a href="meals.html" class="sidebar-link"><span class="sidebar-icon">🍲</span> Daily Headcounts</a>
+        <a href="menu.html" class="sidebar-link"><span class="sidebar-icon">📋</span> Weekly Food Menu</a>
+        <a href="attendance.html" class="sidebar-link"><span class="sidebar-icon">🎟️</span> Dining Hall Scanner</a>
+
+        <div class="nav-category">Quality &amp; Feedback</div>
+        <a href="complaints.html" class="sidebar-link active"><span class="sidebar-icon">⚠️</span> Food Quality Issues</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">MS</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Nurul Huda</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">MESS SUPERVISOR</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Kitchen Quality Assurance</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-primary btn-sm" onclick="HMS.openModal('logFoodIncidentModal')">+ Log Kitchen Incident</button>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Dining &amp; Food Quality Complaints</h1>
+            <p class="page-desc">Review student feedback, taste remarks, portion sizes, hygiene audits, and corrective catering actions.</p>
+          </div>
+        </div>
+
+        <!-- Metric Pulse -->
+        <div class="stats-grid-dashboard">
+          <div class="stat-card">
+            <div class="stat-icon primary">🥗</div>
+            <div class="stat-meta">
+              <h3 id="statTotalIssues">5</h3>
+              <p>Total Recorded Feedback</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon warning">⏳</div>
+            <div class="stat-meta">
+              <h3 id="statPendingIssues">2</h3>
+              <p>Pending Review</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon success">✅</div>
+            <div class="stat-meta">
+              <h3 id="statResolvedIssues">3</h3>
+              <p>Resolved &amp; Closed</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon info">⭐</div>
+            <div class="stat-meta">
+              <h3>4.7 / 5.0</h3>
+              <p>Weekly Dining Satisfaction</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Complaints Table Card -->
+        <div class="card" style="margin-top: 1.5rem;">
+          <div class="table-toolbar">
+            <div class="search-input-group">
+              <span class="icon">🔍</span>
+              <input type="text" id="foodCmpSearch" class="form-control" placeholder="Search by student, room, issue...">
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <select id="foodStatusFilter" class="form-control" style="width: 170px;">
+                <option value="">All Statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="foodComplaintsTable">
+              <thead>
+                <tr>
+                  <th>Ticket ID</th>
+                  <th>Student Name</th>
+                  <th>Room</th>
+                  <th>Issue &amp; Remarks</th>
+                  <th>Severity</th>
+                  <th>Date Logged</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="foodComplaintsBody">
+                <!-- Dynamically Rendered -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Log Food Incident Modal -->
+  <div class="modal-overlay" id="logFoodIncidentModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Record Kitchen Quality Observation</h3>
+        <button class="modal-close" onclick="HMS.closeModal('logFoodIncidentModal')">&times;</button>
+      </div>
+      <form id="foodIncidentForm">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Reported By / Student <span class="required">*</span></label>
+              <input type="text" id="fi_student" class="form-control" required placeholder="e.g. Dining Hall Inspection / Fahim Rahman">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Room / Dining Table <span class="required">*</span></label>
+              <input type="text" id="fi_room" class="form-control" required placeholder="e.g. Table 4 / M-102">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Meal Session</label>
+              <select id="fi_session" class="form-control">
+                <option value="Breakfast">Breakfast</option>
+                <option value="Lunch" selected>Lunch</option>
+                <option value="Dinner">Dinner</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Severity Level</label>
+              <select id="fi_priority" class="form-control">
+                <option value="Low">Low (General Remark)</option>
+                <option value="Medium" selected>Medium (Portion / Taste)</option>
+                <option value="High">High (Freshness / Hygiene)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Issue Details &amp; Observation <span class="required">*</span></label>
+            <textarea id="fi_desc" class="form-control" rows="3" required placeholder="Describe specific complaint (e.g., salt ratio, rice softness, daal temperature)..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="HMS.closeModal('logFoodIncidentModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+      renderFoodComplaints();
+
+      HMS.filterTable('foodCmpSearch', 'foodComplaintsTable');
+
+      document.getElementById('foodStatusFilter').addEventListener('change', function () {
+        const val = this.value.toLowerCase();
+        document.querySelectorAll('#foodComplaintsBody tr').forEach(r => {
+          const st = r.getAttribute('data-status');
+          r.style.display = (!val || st === val) ? '' : 'none';
+        });
+      });
+
+      document.getElementById('foodIncidentForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const complaints = HMS.get('complaints') || [];
+        const newC = {
+          id: 'CMP-' + Math.floor(300 + Math.random() * 699),
+          studentName: document.getElementById('fi_student').value.trim(),
+          room: document.getElementById('fi_room').value.trim(),
+          category: 'Dining/Mess',
+          subject: '[' + document.getElementById('fi_session').value + '] ' + document.getElementById('fi_desc').value.trim(),
+          priority: document.getElementById('fi_priority').value,
+          date: new Date().toISOString().split('T')[0],
+          status: 'Pending'
+        };
+        complaints.unshift(newC);
+        HMS.set('complaints', complaints);
+        HMS.closeModal('logFoodIncidentModal');
+        HMS.showToast('Kitchen record ' + newC.id + ' added successfully', 'success');
+        this.reset();
+        renderFoodComplaints();
+      });
+    });
+
+    function renderFoodComplaints() {
+      const allComplaints = HMS.get('complaints') || [];
+      // Filter dining/mess or include simulated ones
+      const foodIssues = allComplaints.filter(c => c.category === 'Dining/Mess' || c.subject.toLowerCase().includes('dinner') || c.subject.toLowerCase().includes('lunch') || c.subject.toLowerCase().includes('breakfast') || c.subject.toLowerCase().includes('food') || c.subject.toLowerCase().includes('rice') || c.subject.toLowerCase().includes('mess'));
+
+      // If empty, add a couple of initial items so the screen is rich
+      if (foodIssues.length === 0) {
+        foodIssues.push(
+          { id: 'CMP-204', studentName: 'Anika Tabassum', room: 'M-102', category: 'Dining/Mess', subject: 'Dinner Rice Quality and Temperature Feedback', date: '2026-09-05', priority: 'Low', status: 'Resolved' },
+          { id: 'CMP-210', studentName: 'Fahim Rahman', room: 'A-302', category: 'Dining/Mess', subject: 'Request for Extra Salad Serving in Lunch', date: '2026-09-08', priority: 'Medium', status: 'Pending' }
+        );
+      }
+
+      // Update counters
+      const pendingCount = foodIssues.filter(c => c.status !== 'Resolved').length;
+      const resolvedCount = foodIssues.filter(c => c.status === 'Resolved').length;
+      document.getElementById('statTotalIssues').textContent = foodIssues.length;
+      document.getElementById('statPendingIssues').textContent = pendingCount;
+      document.getElementById('statResolvedIssues').textContent = resolvedCount;
+
+      const tbody = document.getElementById('foodComplaintsBody');
+      tbody.innerHTML = foodIssues.map(c => `
+        <tr data-status="${c.status.toLowerCase()}">
+          <td class="font-mono"><strong>${c.id}</strong></td>
+          <td><strong>${c.studentName}</strong></td>
+          <td><span class="badge badge-secondary">${c.room}</span></td>
+          <td>${c.subject}</td>
+          <td>
+            <span class="badge ${c.priority === 'High' ? 'badge-danger' : c.priority === 'Medium' ? 'badge-warning' : 'badge-info'}">
+              ${c.priority}
+            </span>
+          </td>
+          <td class="font-mono">${c.date}</td>
+          <td>
+            <span class="badge ${c.status === 'Resolved' ? 'badge-success' : c.status === 'In Progress' ? 'badge-info' : 'badge-warning'}">
+              ${c.status}
+            </span>
+          </td>
+          <td>
+            ${c.status !== 'Resolved' ? `
+              <button class="btn btn-success btn-sm" onclick="resolveFoodIssue('${c.id}')">Resolve</button>
+            ` : `
+              <span style="font-size: 0.82rem; color: var(--success); font-weight: 600;">✓ Acknowledged</span>
+            `}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function resolveFoodIssue(id) {
+      let complaints = HMS.get('complaints') || [];
+      let found = false;
+      complaints = complaints.map(c => {
+        if (c.id === id) {
+          c.status = 'Resolved';
+          found = true;
+        }
+        return c;
+      });
+      if (!found) {
+        // In case it was the fallback sample
+        complaints.push({ id: id, studentName: 'Boarder', room: 'A-302', category: 'Dining/Mess', subject: 'Feedback reviewed', date: '2026-09-08', priority: 'Medium', status: 'Resolved' });
+      }
+      HMS.set('complaints', complaints);
+      HMS.showToast('Dining issue ' + id + ' marked as resolved!', 'success');
+      renderFoodComplaints();
+    }
+  </script>
+</body>
+</html>

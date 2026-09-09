@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complaints &amp; Maintenance | Resident Student - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>BOARDER</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">🏠</span> Student Portal</a>
+        <a href="profile.html" class="sidebar-link"><span class="sidebar-icon">👤</span> My Profile</a>
+
+        <div class="nav-category">Residence</div>
+        <a href="room.html" class="sidebar-link"><span class="sidebar-icon">🛏️</span> My Room &amp; Roommates</a>
+        <a href="applications.html" class="sidebar-link"><span class="sidebar-icon">📝</span> Leave &amp; Seat Requests</a>
+
+        <div class="nav-category">Dining &amp; Finance</div>
+        <a href="meals.html" class="sidebar-link"><span class="sidebar-icon">🍲</span> Meal Management</a>
+        <a href="payments.html" class="sidebar-link"><span class="sidebar-icon">💳</span> Invoices &amp; Payments</a>
+
+        <div class="nav-category">Support &amp; Updates</div>
+        <a href="complaints.html" class="sidebar-link active"><span class="sidebar-icon">⚠️</span> Complaints &amp; Repair</a>
+        <a href="notices.html" class="sidebar-link"><span class="sidebar-icon">📢</span> Notice Board</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">FR</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Fahim Rahman</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">BOARDER (011211045)</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Hostel Helpdesk &amp; Maintenance Tickets</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-primary btn-sm" onclick="HMS.openModal('newTicketModal')">+ Log New Complaint</button>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">My Maintenance Requests &amp; Complaints</h1>
+            <p class="page-desc">Submit electrical, plumbing, sanitary, Wi-Fi, or room carpentry repair requests. Track repair timelines in real time.</p>
+          </div>
+        </div>
+
+        <!-- Metric Pulse -->
+        <div class="stats-grid-dashboard">
+          <div class="stat-card">
+            <div class="stat-icon primary">🛠️</div>
+            <div class="stat-meta">
+              <h3 id="statTotalTickets">3</h3>
+              <p>Total Tickets Submitted</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon warning">⏳</div>
+            <div class="stat-meta">
+              <h3 id="statPendingTickets">1</h3>
+              <p>Active Under Repair</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon success">✅</div>
+            <div class="stat-meta">
+              <h3 id="statResolvedTickets">2</h3>
+              <p>Completed &amp; Closed</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon info">⚡</div>
+            <div class="stat-meta">
+              <h3>&lt; 24 Hours</h3>
+              <p>Average SLA Turnaround</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tickets Table Card -->
+        <div class="card" style="margin-top: 1.5rem;">
+          <div class="table-toolbar">
+            <div class="search-input-group">
+              <span class="icon">🔍</span>
+              <input type="text" id="bCmpSearch" class="form-control" placeholder="Search ticket ID, category, keyword...">
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <select id="bCmpStatusFilter" class="form-control" style="width: 160px;">
+                <option value="">All Statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="boarderTicketsTable">
+              <thead>
+                <tr>
+                  <th>Ticket ID</th>
+                  <th>Category</th>
+                  <th>Issue Details</th>
+                  <th>Room</th>
+                  <th>Priority</th>
+                  <th>Reported Date</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="boarderTicketsBody">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- New Ticket Modal -->
+  <div class="modal-overlay" id="newTicketModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Submit Repair or Complaint Ticket</h3>
+        <button class="modal-close" onclick="HMS.closeModal('newTicketModal')">&times;</button>
+      </div>
+      <form id="newTicketForm">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Category <span class="required">*</span></label>
+              <select id="tk_cat" class="form-control" required>
+                <option value="Electrical">Electrical (Fan, Light, Switch, AC)</option>
+                <option value="Plumbing">Plumbing (Washroom, Tap, Geyser)</option>
+                <option value="Wi-Fi">Wi-Fi &amp; Internet Connectivity</option>
+                <option value="Carpentry">Carpentry &amp; Furniture (Bed, Table, Lock)</option>
+                <option value="Dining/Mess">Dining &amp; Food Quality</option>
+                <option value="Cleaning">Housekeeping &amp; Room Hygiene</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Priority Level <span class="required">*</span></label>
+              <select id="tk_priority" class="form-control">
+                <option value="Low">Low (General cosmetic / non-urgent)</option>
+                <option value="Medium" selected>Medium (Normal service request)</option>
+                <option value="High">High (Urgent / water leak, power cut)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Room / Location</label>
+            <input type="text" id="tk_room" class="form-control" value="Padma A-302" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Fault Description &amp; Details <span class="required">*</span></label>
+            <textarea id="tk_desc" class="form-control" rows="3" required placeholder="Clearly describe the problem so the technician brings appropriate tools..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Attach Photo (Optional)</label>
+            <input type="file" class="form-control" accept="image/*">
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Supports JPG, PNG (Max 5MB)</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="HMS.closeModal('newTicketModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Submit Maintenance Ticket</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Ticket Timeline & Detail Modal -->
+  <div class="modal-overlay" id="ticketDetailModal">
+    <div class="modal-content" style="max-width: 550px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="tdModalTitle">Ticket Information</h3>
+        <button class="modal-close" onclick="HMS.closeModal('ticketDetailModal')">&times;</button>
+      </div>
+      <div class="modal-body" id="tdModalBody">
+        <!-- Rendered via JS -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="HMS.closeModal('ticketDetailModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+      renderBoarderTickets();
+
+      HMS.filterTable('bCmpSearch', 'boarderTicketsTable');
+
+      document.getElementById('bCmpStatusFilter').addEventListener('change', function () {
+        const val = this.value.toLowerCase();
+        document.querySelectorAll('#boarderTicketsBody tr').forEach(r => {
+          const st = r.getAttribute('data-status');
+          r.style.display = (!val || st === val) ? '' : 'none';
+        });
+      });
+
+      document.getElementById('newTicketForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const complaints = HMS.get('complaints') || [];
+        const newTk = {
+          id: 'CMP-' + Math.floor(200 + Math.random() * 799),
+          studentName: 'Fahim Rahman',
+          room: document.getElementById('tk_room').value.trim() || 'A-302',
+          category: document.getElementById('tk_cat').value,
+          subject: document.getElementById('tk_desc').value.trim(),
+          priority: document.getElementById('tk_priority').value,
+          date: new Date().toISOString().split('T')[0],
+          status: 'Pending'
+        };
+        complaints.unshift(newTk);
+        HMS.set('complaints', complaints);
+        HMS.closeModal('newTicketModal');
+        HMS.showToast('Ticket ' + newTk.id + ' dispatched to maintenance technician!', 'success');
+        this.reset();
+        renderBoarderTickets();
+      });
+    });
+
+    function renderBoarderTickets() {
+      const allC = HMS.get('complaints') || [];
+      // Personal tickets plus relevant defaults
+      let userTickets = allC.filter(c => c.studentName === 'Fahim Rahman' || c.room.includes('A-302'));
+
+      if (userTickets.length === 0) {
+        userTickets = [
+          { id: 'CMP-201', studentName: 'Fahim Rahman', room: 'A-302', category: 'Electrical', subject: 'Ceiling Fan Regulator Not Responding', date: '2026-09-08', priority: 'Medium', status: 'In Progress' },
+          { id: 'CMP-189', studentName: 'Fahim Rahman', room: 'A-302', category: 'Wi-Fi', subject: 'LAN Port Wall Jack Loose Contact', date: '2026-08-20', priority: 'Low', status: 'Resolved' },
+          { id: 'CMP-175', studentName: 'Fahim Rahman', room: 'A-302', category: 'Plumbing', subject: 'Washroom Basin Water Drain Slow', date: '2026-08-02', priority: 'Medium', status: 'Resolved' }
+        ];
+      }
+
+      const pending = userTickets.filter(t => t.status !== 'Resolved').length;
+      const resolved = userTickets.filter(t => t.status === 'Resolved').length;
+
+      document.getElementById('statTotalTickets').textContent = userTickets.length;
+      document.getElementById('statPendingTickets').textContent = pending;
+      document.getElementById('statResolvedTickets').textContent = resolved;
+
+      const tbody = document.getElementById('boarderTicketsBody');
+      tbody.innerHTML = userTickets.map(t => `
+        <tr data-status="${t.status.toLowerCase()}">
+          <td class="font-mono"><strong>${t.id}</strong></td>
+          <td><span class="badge badge-secondary">${t.category}</span></td>
+          <td>${t.subject}</td>
+          <td>${t.room}</td>
+          <td>
+            <span class="badge ${t.priority === 'High' ? 'badge-danger' : t.priority === 'Medium' ? 'badge-warning' : 'badge-info'}">
+              ${t.priority}
+            </span>
+          </td>
+          <td class="font-mono">${t.date}</td>
+          <td>
+            <span class="badge ${t.status === 'Resolved' ? 'badge-success' : t.status === 'In Progress' ? 'badge-info' : 'badge-warning'}">
+              ${t.status}
+            </span>
+          </td>
+          <td>
+            <button class="btn btn-outline btn-sm" onclick="showTicketDetail('${t.id}')">View</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function showTicketDetail(id) {
+      const allC = HMS.get('complaints') || [];
+      const t = allC.find(c => c.id === id) || {
+        id: id,
+        category: 'Maintenance',
+        subject: 'Service Ticket',
+        priority: 'Medium',
+        date: '2026-09-08',
+        status: 'In Progress'
+      };
+
+      document.getElementById('tdModalTitle').textContent = 'Ticket Details: ' + t.id;
+      document.getElementById('tdModalBody').innerHTML = `
+        <div style="background: var(--bg-main); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+            <span style="font-weight: 700;">Category: ${t.category}</span>
+            <span class="badge ${t.priority === 'High' ? 'badge-danger' : 'badge-warning'}">Priority: ${t.priority}</span>
+          </div>
+          <p style="margin: 0.5rem 0 0 0; color: var(--text-main); font-size: 0.95rem;">${t.subject}</p>
+        </div>
+
+        <h4 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem;">Resolution Timeline</h4>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem; border-left: 2px solid var(--border-color); padding-left: 1rem; margin-left: 0.5rem;">
+          <div>
+            <strong style="font-size: 0.88rem; color: var(--text-main);">Ticket Logged</strong>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">${t.date} 10:15 AM &bull; Student Portal</div>
+          </div>
+          <div>
+            <strong style="font-size: 0.88rem; color: var(--text-main);">Assigned to Duty Electrician / Plumber</strong>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">${t.date} 11:30 AM &bull; Manager Kabir Ahmed</div>
+          </div>
+          <div>
+            <strong style="font-size: 0.88rem; color: ${t.status === 'Resolved' ? 'var(--success)' : 'var(--warning)'};">
+              ${t.status === 'Resolved' ? '✓ Repair Verified &amp; Closed' : '⏳ Work Order In Progress'}
+            </strong>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">
+              ${t.status === 'Resolved' ? 'Work order signed off by boarder.' : 'Technician scheduled for room visit.'}
+            </div>
+          </div>
+        </div>
+      `;
+      HMS.openModal('ticketDetailModal');
+    }
+  </script>
+</body>
+</html>

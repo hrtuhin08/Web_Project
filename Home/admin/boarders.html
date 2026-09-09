@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boarder Directory | Admin Panel - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>ADMIN</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">📊</span> Overview</a>
+
+        <div class="nav-category">Accommodations</div>
+        <a href="boarders.html" class="sidebar-link active"><span class="sidebar-icon">👥</span> Boarder Directory</a>
+        <a href="rooms.html" class="sidebar-link"><span class="sidebar-icon">🛏️</span> Room &amp; Bed Matrix</a>
+        <a href="applications.html" class="sidebar-link"><span class="sidebar-icon">📝</span> Seat Applications</a>
+
+        <div class="nav-category">Operations</div>
+        <a href="payments.html" class="sidebar-link"><span class="sidebar-icon">💳</span> Fee &amp; Billing</a>
+        <a href="complaints.html" class="sidebar-link"><span class="sidebar-icon">⚠️</span> Complaints</a>
+        <a href="notices.html" class="sidebar-link"><span class="sidebar-icon">📢</span> Notice Board</a>
+
+        <div class="nav-category">Administration</div>
+        <a href="users.html" class="sidebar-link"><span class="sidebar-icon">🛡️</span> User Management</a>
+        <a href="reports.html" class="sidebar-link"><span class="sidebar-icon">📈</span> Reports &amp; Analytics</a>
+        <a href="settings.html" class="sidebar-link"><span class="sidebar-icon">⚙️</span> Settings</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">AD</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Admin User</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">ADMINISTRATOR</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Student Residents &amp; Boarders</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-primary btn-sm" onclick="HMS.openModal('addBoarderModal')">+ Register Boarder</button>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Active Boarder Roster</h1>
+            <p class="page-desc">Complete residential records, allocated bed coordinates, guardian emergency contacts, and fee status.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-toolbar">
+            <div class="search-input-group">
+              <span class="icon">🔍</span>
+              <input type="text" id="boarderSearch" class="form-control" placeholder="Search by student name, ID, room, department...">
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <select id="deptFilter" class="form-control" style="width: 170px;">
+                <option value="">All Departments</option>
+                <option value="CSE">CSE</option>
+                <option value="EEE">EEE</option>
+                <option value="BBA">BBA</option>
+                <option value="Pharmacy">Pharmacy</option>
+                <option value="Data Science">Data Science</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="boardersTable">
+              <thead>
+                <tr>
+                  <th>Boarder ID</th>
+                  <th>Student Name</th>
+                  <th>Student ID</th>
+                  <th>Department</th>
+                  <th>Room &amp; Bed</th>
+                  <th>Guardian &amp; Emergency</th>
+                  <th>Outstanding Dues</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="boardersTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Register Boarder Modal -->
+  <div class="modal-overlay" id="addBoarderModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Manual Boarder Registration</h3>
+        <button class="modal-close" onclick="HMS.closeModal('addBoarderModal')">&times;</button>
+      </div>
+      <form id="addBoarderForm">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Full Name <span class="required">*</span></label>
+              <input type="text" id="b_name" class="form-control" required placeholder="Student name">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Student ID <span class="required">*</span></label>
+              <input type="text" id="b_id" class="form-control" required placeholder="011...">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Department <span class="required">*</span></label>
+              <select id="b_dept" class="form-control" required>
+                <option value="CSE">CSE</option>
+                <option value="EEE">EEE</option>
+                <option value="BBA">BBA</option>
+                <option value="Pharmacy">Pharmacy</option>
+                <option value="Data Science">Data Science</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Assigned Room &amp; Bed <span class="required">*</span></label>
+              <input type="text" id="b_room" class="form-control" required placeholder="e.g. A-201 (Bed-1)">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Guardian Emergency Phone</label>
+            <input type="text" id="b_guardian" class="form-control" placeholder="Guardian Name (+8801...)">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="HMS.closeModal('addBoarderModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Enroll Boarder</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+      renderBoarders();
+
+      HMS.filterTable('boarderSearch', 'boardersTable');
+
+      document.getElementById('deptFilter').addEventListener('change', function () {
+        const dept = this.value.toLowerCase();
+        document.querySelectorAll('#boardersTableBody tr').forEach(r => {
+          const rowDept = r.getAttribute('data-dept');
+          r.style.display = (!dept || rowDept === dept) ? '' : 'none';
+        });
+      });
+
+      document.getElementById('addBoarderForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const boarders = HMS.get('boarders') || [];
+        const newB = {
+          id: 'B-0' + Math.floor(10 + Math.random() * 90),
+          name: document.getElementById('b_name').value.trim(),
+          studentId: document.getElementById('b_id').value.trim(),
+          dept: document.getElementById('b_dept').value,
+          room: document.getElementById('b_room').value.trim(),
+          bed: 'Bed-1',
+          guardian: document.getElementById('b_guardian').value.trim() || 'Parent Phone (+8801700000000)',
+          dues: 0,
+          status: 'Active'
+        };
+        boarders.unshift(newB);
+        HMS.set('boarders', boarders);
+        HMS.closeModal('addBoarderModal');
+        HMS.showToast('Boarder ' + newB.name + ' enrolled successfully!', 'success');
+        this.reset();
+        renderBoarders();
+      });
+    });
+
+    function renderBoarders() {
+      const boarders = HMS.get('boarders') || [];
+      const tbody = document.getElementById('boardersTableBody');
+      tbody.innerHTML = boarders.map(b => `
+        <tr data-dept="${b.dept.toLowerCase()}">
+          <td class="font-mono"><strong>${b.id}</strong></td>
+          <td><strong>${b.name}</strong></td>
+          <td class="font-mono">${b.studentId}</td>
+          <td>${b.dept}</td>
+          <td><span class="badge badge-info">${b.room}</span></td>
+          <td style="font-size: 0.85rem;">${b.guardian}</td>
+          <td class="font-mono" style="font-weight: 700; color: ${b.dues > 0 ? 'var(--danger)' : 'var(--success)'};">
+            ৳ ${b.dues.toLocaleString()}
+          </td>
+          <td><span class="badge badge-success">${b.status}</span></td>
+          <td>
+            <button class="btn btn-secondary btn-sm" onclick="clearDues('${b.id}')">Clear Dues</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function clearDues(id) {
+      let boarders = HMS.get('boarders') || [];
+      boarders = boarders.map(b => {
+        if (b.id === id) b.dues = 0;
+        return b;
+      });
+      HMS.set('boarders', boarders);
+      HMS.showToast('Dues marked as paid.', 'success');
+      renderBoarders();
+    }
+  </script>
+</body>
+</html>

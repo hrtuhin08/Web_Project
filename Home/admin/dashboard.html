@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | UIU Hostel Management System</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>ADMIN</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link active">
+          <span class="sidebar-icon">📊</span> Overview
+        </a>
+
+        <div class="nav-category">Accommodations</div>
+        <a href="boarders.html" class="sidebar-link">
+          <span class="sidebar-icon">👥</span> Boarder Directory
+        </a>
+        <a href="rooms.html" class="sidebar-link">
+          <span class="sidebar-icon">🛏️</span> Room &amp; Bed Matrix
+        </a>
+        <a href="applications.html" class="sidebar-link">
+          <span class="sidebar-icon">📝</span> Seat Applications
+        </a>
+
+        <div class="nav-category">Operations</div>
+        <a href="payments.html" class="sidebar-link">
+          <span class="sidebar-icon">💳</span> Fee &amp; Billing
+        </a>
+        <a href="complaints.html" class="sidebar-link">
+          <span class="sidebar-icon">⚠️</span> Complaints
+        </a>
+        <a href="notices.html" class="sidebar-link">
+          <span class="sidebar-icon">📢</span> Notice Board
+        </a>
+
+        <div class="nav-category">Administration</div>
+        <a href="users.html" class="sidebar-link">
+          <span class="sidebar-icon">🛡️</span> User Management
+        </a>
+        <a href="reports.html" class="sidebar-link">
+          <span class="sidebar-icon">📈</span> Reports &amp; Analytics
+        </a>
+        <a href="settings.html" class="sidebar-link">
+          <span class="sidebar-icon">⚙️</span> Settings
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">AD</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">Admin User</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">ADMINISTRATOR</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Section -->
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <div class="topbar-search">
+            <span class="topbar-search-icon">🔍</span>
+            <input type="text" class="form-control" placeholder="Search boarders, rooms, invoices...">
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <button class="topbar-action-btn" title="Quick Notices" onclick="location.href='notices.html'">
+            🔔
+            <span class="topbar-badge">4</span>
+          </button>
+          <a href="../index.html" class="btn btn-secondary btn-sm" target="_blank">View Site ↗</a>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Hostel Administrative Pulse</h1>
+            <p class="page-desc">Comprehensive occupancy, resident logistics, and billing analytics for United International University Hostels.</p>
+          </div>
+          <div style="display: flex; gap: 0.75rem;">
+            <a href="applications.html" class="btn btn-primary btn-sm">+ Review Applications</a>
+            <a href="reports.html" class="btn btn-secondary btn-sm">Export Report</a>
+          </div>
+        </div>
+
+        <!-- Metric Stat Cards -->
+        <div class="stats-grid-dashboard">
+          <div class="stat-card">
+            <div class="stat-icon primary">👥</div>
+            <div class="stat-meta">
+              <h3 id="adm_boarders_count">244</h3>
+              <p>Active Boarders</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon success">🛏️</div>
+            <div class="stat-meta">
+              <h3 id="adm_vacant_count">44</h3>
+              <p>Available Vacant Beds</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon warning">📝</div>
+            <div class="stat-meta">
+              <h3 id="adm_pending_apps">2</h3>
+              <p>Pending Applications</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon danger">💳</div>
+            <div class="stat-meta">
+              <h3>৳ 7,300</h3>
+              <p>Overdue Payments</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two Column Analytical Overview -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+          <!-- Occupancy Progress Bars -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Wing Occupancy Distribution</h3>
+              <span class="badge badge-info">Capacity: 288 Beds</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.4rem; font-weight: 600;">
+                  <span>Padma International - Block A (Male)</span>
+                  <span class="font-mono">88% (122 / 138 Beds)</span>
+                </div>
+                <div style="height: 10px; background: var(--border); border-radius: 5px; overflow: hidden;">
+                  <div style="width: 88%; height: 100%; background: var(--primary);"></div>
+                </div>
+              </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.4rem; font-weight: 600;">
+                  <span>Padma International - Block B (Male)</span>
+                  <span class="font-mono">82% (58 / 70 Beds)</span>
+                </div>
+                <div style="height: 10px; background: var(--border); border-radius: 5px; overflow: hidden;">
+                  <div style="width: 82%; height: 100%; background: #3b82f6;"></div>
+                </div>
+              </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.4rem; font-weight: 600;">
+                  <span>Meghna Scholars Hall (Female)</span>
+                  <span class="font-mono">80% (64 / 80 Beds)</span>
+                </div>
+                <div style="height: 10px; background: var(--border); border-radius: 5px; overflow: hidden;">
+                  <div style="width: 80%; height: 100%; background: var(--purple);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions & Meal Lock Alert -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Mess Operational Status</h3>
+              <span class="badge badge-warning">Cutoff: 9:00 PM</span>
+            </div>
+            <div style="background: var(--warning-bg); border: 1px solid var(--warning-border); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1.25rem;">
+              <strong style="color: var(--warning); display: block; font-size: 0.95rem;">⏰ Today's Meal Headcount Locked</strong>
+              <p style="font-size: 0.85rem; color: #78350f; margin-top: 0.25rem;">Breakfast: 210 | Lunch: 235 | Dinner: 228 confirmed plates. Dynamic rate calculated at ৳ 85.00/meal.</p>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+              <a href="rooms.html" class="btn btn-secondary btn-sm" style="justify-content: flex-start;">🛏️ Allocate Beds</a>
+              <a href="notices.html" class="btn btn-secondary btn-sm" style="justify-content: flex-start;">📢 Publish Bulletin</a>
+              <a href="payments.html" class="btn btn-secondary btn-sm" style="justify-content: flex-start;">💳 Review Invoices</a>
+              <a href="complaints.html" class="btn btn-secondary btn-sm" style="justify-content: flex-start;">⚠️ View Complaints</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Admission Applications Table -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Recent Seat Applications</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted);">Incoming student enrollment applications pending administrative approval.</p>
+            </div>
+            <a href="applications.html" class="btn btn-secondary btn-sm">View All Applications</a>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>App ID</th>
+                  <th>Applicant Name</th>
+                  <th>Student ID</th>
+                  <th>Department</th>
+                  <th>Hostel Preference</th>
+                  <th>Room Type</th>
+                  <th>Status</th>
+                  <th>Quick Action</th>
+                </tr>
+              </thead>
+              <tbody id="adm_recent_apps_table">
+                <!-- Dynamically populated from script.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+
+      // Render recent applications
+      const apps = HMS.get('applications') || [];
+      const tbody = document.getElementById('adm_recent_apps_table');
+      if (tbody) {
+        tbody.innerHTML = apps.slice(0, 5).map(a => `
+          <tr>
+            <td class="font-mono"><strong>${a.id}</strong></td>
+            <td>${a.studentName}</td>
+            <td class="font-mono">${a.studentId}</td>
+            <td>${a.dept}</td>
+            <td>${a.hostel}</td>
+            <td>${a.roomType}</td>
+            <td>
+              <span class="badge ${a.status === 'Approved' ? 'badge-success' : a.status === 'Rejected' ? 'badge-danger' : 'badge-warning'}">
+                ${a.status}
+              </span>
+            </td>
+            <td>
+              <a href="applications.html" class="btn btn-secondary btn-sm">Review</a>
+            </td>
+          </tr>
+        `).join('');
+      }
+    });
+  </script>
+</body>
+</html>

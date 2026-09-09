@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notice Board Management | Admin Panel - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>ADMIN</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">📊</span> Overview</a>
+
+        <div class="nav-category">Accommodations</div>
+        <a href="boarders.html" class="sidebar-link"><span class="sidebar-icon">👥</span> Boarder Directory</a>
+        <a href="rooms.html" class="sidebar-link"><span class="sidebar-icon">🛏️</span> Room &amp; Bed Matrix</a>
+        <a href="applications.html" class="sidebar-link"><span class="sidebar-icon">📝</span> Seat Applications</a>
+
+        <div class="nav-category">Operations</div>
+        <a href="payments.html" class="sidebar-link"><span class="sidebar-icon">💳</span> Fee &amp; Billing</a>
+        <a href="complaints.html" class="sidebar-link"><span class="sidebar-icon">⚠️</span> Complaints</a>
+        <a href="notices.html" class="sidebar-link active"><span class="sidebar-icon">📢</span> Notice Board</a>
+
+        <div class="nav-category">Administration</div>
+        <a href="users.html" class="sidebar-link"><span class="sidebar-icon">🛡️</span> User Management</a>
+        <a href="reports.html" class="sidebar-link"><span class="sidebar-icon">📈</span> Reports &amp; Analytics</a>
+        <a href="settings.html" class="sidebar-link"><span class="sidebar-icon">⚙️</span> Settings</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">AD</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Admin User</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">ADMINISTRATOR</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Hostel Circulars &amp; Bulletins</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-primary btn-sm" onclick="HMS.openModal('addNoticeModal')">+ Publish New Notice</button>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Campus Notice Board</h1>
+            <p class="page-desc">Publish official administrative announcements, curfew schedules, emergency alerts, and dining circulars.</p>
+          </div>
+        </div>
+
+        <div id="noticesContainer" style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <!-- Dynamically populated -->
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add Notice Modal -->
+  <div class="modal-overlay" id="addNoticeModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Publish Official Bulletin</h3>
+        <button class="modal-close" onclick="HMS.closeModal('addNoticeModal')">&times;</button>
+      </div>
+      <form id="addNoticeForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Notice Title <span class="required">*</span></label>
+            <input type="text" id="ntc_title" class="form-control" required placeholder="e.g. Schedule for Monthly Room Cleaning">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Target Audience <span class="required">*</span></label>
+              <select id="ntc_target" class="form-control" required>
+                <option value="All Residents">All Residents</option>
+                <option value="Padma International">Padma International Residence Only</option>
+                <option value="Meghna Scholars Hall">Meghna Scholars Hall Only</option>
+                <option value="Hostel Staff">Staff &amp; Management</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Priority Flag</label>
+              <select id="ntc_priority" class="form-control">
+                <option value="Normal" selected>Normal</option>
+                <option value="Urgent">Urgent / Emergency</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Notice Body / Instructions <span class="required">*</span></label>
+            <textarea id="ntc_content" class="form-control" rows="4" required placeholder="Detailed notice message to residents..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="HMS.closeModal('addNoticeModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Post to Bulletin Board</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+      renderNotices();
+
+      document.getElementById('addNoticeForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const notices = HMS.get('notices') || [];
+        const newN = {
+          id: 'NTC-0' + (notices.length + 1),
+          title: document.getElementById('ntc_title').value.trim(),
+          target: document.getElementById('ntc_target').value,
+          priority: document.getElementById('ntc_priority').value,
+          content: document.getElementById('ntc_content').value.trim(),
+          author: 'Provost Administration',
+          date: new Date().toISOString().split('T')[0]
+        };
+        notices.unshift(newN);
+        HMS.set('notices', notices);
+        HMS.closeModal('addNoticeModal');
+        HMS.showToast('Notice published successfully!', 'success');
+        this.reset();
+        renderNotices();
+      });
+    });
+
+    function renderNotices() {
+      const notices = HMS.get('notices') || [];
+      const container = document.getElementById('noticesContainer');
+      container.innerHTML = notices.map(n => `
+        <div class="card" style="border-left: 4px solid ${n.priority === 'Urgent' ? 'var(--danger)' : 'var(--primary)'};">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+                <span class="badge ${n.priority === 'Urgent' ? 'badge-danger' : 'badge-info'}">${n.priority}</span>
+                <span class="badge badge-secondary">${n.target}</span>
+              </div>
+              <h3 style="font-size: 1.25rem;">${n.title}</h3>
+            </div>
+            <div style="text-align: right;">
+              <span class="font-mono" style="font-size: 0.85rem; color: var(--text-muted);">${n.date}</span>
+              <button class="btn btn-secondary btn-sm" style="margin-left: 0.5rem; color: var(--danger);" onclick="deleteNotice('${n.id}')">Delete</button>
+            </div>
+          </div>
+          <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-main);">${n.content}</p>
+          <div style="margin-top: 1rem; font-size: 0.82rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 0.5rem;">
+            Issued by: <strong>${n.author}</strong> | Reference ID: <span class="font-mono">${n.id}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function deleteNotice(id) {
+      if (confirm('Remove this notice from the board?')) {
+        let notices = HMS.get('notices') || [];
+        notices = notices.filter(n => n.id !== id);
+        HMS.set('notices', notices);
+        HMS.showToast('Notice removed.', 'info');
+        renderNotices();
+      }
+    }
+  </script>
+</body>
+</html>

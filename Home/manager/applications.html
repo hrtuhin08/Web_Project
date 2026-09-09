@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Application Verification | Manager Panel - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>MANAGER</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">📊</span> Overview</a>
+
+        <div class="nav-category">Resident Services</div>
+        <a href="rooms.html" class="sidebar-link"><span class="sidebar-icon">🛏️</span> Room Allocation</a>
+        <a href="boarders.html" class="sidebar-link"><span class="sidebar-icon">👥</span> Boarders Roster</a>
+        <a href="applications.html" class="sidebar-link active"><span class="sidebar-icon">📝</span> Seat Verification</a>
+
+        <div class="nav-category">Maintenance</div>
+        <a href="complaints.html" class="sidebar-link"><span class="sidebar-icon">⚠️</span> Facility Repairs</a>
+        <a href="reports.html" class="sidebar-link"><span class="sidebar-icon">📈</span> Floor Reports</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">MG</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Kabir Ahmed</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">HOSTEL MANAGER</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Seat Verification Queue</h2>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Candidate Credential Verification</h1>
+            <p class="page-desc">Review applicant academic credentials and verify room readiness before key issuance.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>App ID</th>
+                  <th>Student Name</th>
+                  <th>Student ID</th>
+                  <th>Department</th>
+                  <th>Requested Wing</th>
+                  <th>Room Type</th>
+                  <th>Application Status</th>
+                  <th>Manager Verification</th>
+                </tr>
+              </thead>
+              <tbody id="mgrAppsTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+      renderMgrApps();
+    });
+
+    function renderMgrApps() {
+      const apps = HMS.get('applications') || [];
+      const tbody = document.getElementById('mgrAppsTableBody');
+      tbody.innerHTML = apps.map(a => `
+        <tr>
+          <td class="font-mono"><strong>${a.id}</strong></td>
+          <td><strong>${a.studentName}</strong></td>
+          <td class="font-mono">${a.studentId}</td>
+          <td>${a.dept}</td>
+          <td>${a.hostel}</td>
+          <td>${a.roomType}</td>
+          <td>
+            <span class="badge ${a.status === 'Approved' ? 'badge-success' : a.status === 'Rejected' ? 'badge-danger' : 'badge-warning'}">
+              ${a.status}
+            </span>
+          </td>
+          <td>
+            ${a.status === 'Approved' ? `
+              <button class="btn btn-primary btn-sm" onclick="HMS.showToast('Bed check completed for ${a.studentName}', 'success')">Ready for Check-In</button>
+            ` : `
+              <span style="font-size: 0.82rem; color: var(--text-muted);">Awaiting Provost</span>
+            `}
+          </td>
+        </tr>
+      `).join('');
+    }
+  </script>
+</body>
+</html>

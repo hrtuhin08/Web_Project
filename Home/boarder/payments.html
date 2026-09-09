@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoices &amp; Fee Payments | Resident Student - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .gateway-option {
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.2s;
+    }
+    .gateway-option:hover, .gateway-option.selected {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .gateway-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>BOARDER</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">🏠</span> Student Portal</a>
+        <a href="profile.html" class="sidebar-link"><span class="sidebar-icon">👤</span> My Profile</a>
+
+        <div class="nav-category">Residence</div>
+        <a href="room.html" class="sidebar-link"><span class="sidebar-icon">🛏️</span> My Room &amp; Roommates</a>
+        <a href="applications.html" class="sidebar-link"><span class="sidebar-icon">📝</span> Leave &amp; Seat Requests</a>
+
+        <div class="nav-category">Dining &amp; Finance</div>
+        <a href="meals.html" class="sidebar-link"><span class="sidebar-icon">🍲</span> Meal Management</a>
+        <a href="payments.html" class="sidebar-link active"><span class="sidebar-icon">💳</span> Invoices &amp; Payments</a>
+
+        <div class="nav-category">Support &amp; Updates</div>
+        <a href="complaints.html" class="sidebar-link"><span class="sidebar-icon">⚠️</span> Complaints &amp; Repair</a>
+        <a href="notices.html" class="sidebar-link"><span class="sidebar-icon">📢</span> Notice Board</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">FR</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Fahim Rahman</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">BOARDER (011211045)</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Student Fee Ledger &amp; Digital Payments</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-primary btn-sm" onclick="openPaymentModal(null, 4500)">💳 Make Online Payment</button>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Billing, Invoices &amp; Receipts</h1>
+            <p class="page-desc">Track your monthly seat rent, mess catering deposits, utility bills, and download official payment receipts.</p>
+          </div>
+        </div>
+
+        <!-- Metric Pulse -->
+        <div class="stats-grid-dashboard">
+          <div class="stat-card">
+            <div class="stat-icon success">💳</div>
+            <div class="stat-meta">
+              <h3 id="statTotalPaid">৳ 45,600</h3>
+              <p>Total Paid (2026 Academic Year)</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon warning">⏳</div>
+            <div class="stat-meta">
+              <h3 id="statTotalDue">৳ 0.00</h3>
+              <p>Current Pending Dues</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon info">🗓️</div>
+            <div class="stat-meta">
+              <h3>October 5, 2026</h3>
+              <p>Next Due Date</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon primary">🛡️</div>
+            <div class="stat-meta">
+              <h3>Clear / Up to Date</h3>
+              <p>Accounts Standing</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Invoices Table Card -->
+        <div class="card" style="margin-top: 1.5rem;">
+          <div class="table-toolbar">
+            <div class="search-input-group">
+              <span class="icon">🔍</span>
+              <input type="text" id="paySearch" class="form-control" placeholder="Search invoice, type, method...">
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <select id="payStatusFilter" class="form-control" style="width: 150px;">
+                <option value="">All Statuses</option>
+                <option value="Paid">Paid</option>
+                <option value="Due">Due</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="boarderPaymentsTable">
+              <thead>
+                <tr>
+                  <th>Invoice ID</th>
+                  <th>Description / Fee Head</th>
+                  <th>Amount</th>
+                  <th>Date</th>
+                  <th>Method</th>
+                  <th>Status</th>
+                  <th>Receipt</th>
+                </tr>
+              </thead>
+              <tbody id="boarderPaymentsBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Online Payment Gateway Modal -->
+  <div class="modal-overlay" id="payOnlineModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Hostel Fee Checkout Gateway</h3>
+        <button class="modal-close" onclick="HMS.closeModal('payOnlineModal')">&times;</button>
+      </div>
+      <form id="onlinePayForm">
+        <div class="modal-body">
+          <div style="text-align: center; margin-bottom: 1.5rem; background: var(--bg-main); padding: 1rem; border-radius: var(--radius-md);">
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Payable Amount</span>
+            <h2 style="font-size: 2rem; font-weight: 800; color: var(--primary); margin: 0.2rem 0;" id="payModalAmount">৳ 4,500</h2>
+            <span style="font-size: 0.82rem; color: var(--text-secondary);">September 2026 Room Rent &amp; Utilities</span>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1.25rem;">
+            <label class="form-label" style="font-weight: 700;">Select Payment Gateway</label>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <label class="gateway-option selected" onclick="selectGateway(this, 'bKash')">
+                <input type="radio" name="gateway" value="bKash" checked style="display:none;">
+                <div class="gateway-logo" style="background: #e2136e; color: #fff;">bKash</div>
+                <div style="flex: 1;">
+                  <strong>bKash Direct Gateway</strong>
+                  <div style="font-size: 0.78rem; color: var(--text-muted);">Instant 24/7 wallet transfer (0% Fee)</div>
+                </div>
+              </label>
+              <label class="gateway-option" onclick="selectGateway(this, 'Nagad')">
+                <input type="radio" name="gateway" value="Nagad" style="display:none;">
+                <div class="gateway-logo" style="background: #f7941d; color: #fff;">Nagad</div>
+                <div style="flex: 1;">
+                  <strong>Nagad Payment</strong>
+                  <div style="font-size: 0.78rem; color: var(--text-muted);">Postal digital wallet</div>
+                </div>
+              </label>
+              <label class="gateway-option" onclick="selectGateway(this, 'Card')">
+                <input type="radio" name="gateway" value="Card" style="display:none;">
+                <div class="gateway-logo" style="background: #1e3a8a; color: #fff;">VISA</div>
+                <div style="flex: 1;">
+                  <strong>Visa / Mastercard / DBBL Nexus</strong>
+                  <div style="font-size: 0.78rem; color: var(--text-muted);">Debit &amp; credit card gateway</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Wallet Number / Card Holder Phone <span class="required">*</span></label>
+            <input type="tel" id="pay_wallet" class="form-control" required placeholder="01XXXXXXXXX" value="01611223344">
+          </div>
+          <div class="form-group">
+            <label class="form-label">PIN / Verification Code <span class="required">*</span></label>
+            <input type="password" id="pay_pin" class="form-control" required placeholder="•••••" maxlength="5">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="HMS.closeModal('payOnlineModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Authorize &amp; Pay Now</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Official Receipt Voucher Modal -->
+  <div class="modal-overlay" id="receiptModal">
+    <div class="modal-content" style="max-width: 550px;">
+      <div class="modal-header" style="border-bottom: 2px dashed var(--border-color);">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <div class="brand-icon" style="width: 28px; height: 28px; font-size: 0.8rem;">U</div>
+          <h3 class="modal-title">UIU Hostel Money Receipt</h3>
+        </div>
+        <button class="modal-close" onclick="HMS.closeModal('receiptModal')">&times;</button>
+      </div>
+      <div class="modal-body" id="receiptModalBody">
+        <!-- Rendered via JS -->
+      </div>
+      <div class="modal-footer" style="justify-content: space-between;">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="HMS.closeModal('receiptModal')">Close</button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="window.print()">🖨️ Print Receipt Voucher</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    let activePaymentGateway = 'bKash';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+      renderBoarderPayments();
+
+      HMS.filterTable('paySearch', 'boarderPaymentsTable');
+
+      document.getElementById('payStatusFilter').addEventListener('change', function () {
+        const val = this.value.toLowerCase();
+        document.querySelectorAll('#boarderPaymentsBody tr').forEach(r => {
+          const st = r.getAttribute('data-status');
+          r.style.display = (!val || st === val) ? '' : 'none';
+        });
+      });
+
+      document.getElementById('onlinePayForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const payments = HMS.get('payments') || [];
+        const newInv = {
+          id: 'INV-' + Math.floor(1000 + Math.random() * 9000),
+          studentId: '011211045',
+          studentName: 'Fahim Rahman',
+          room: 'A-302',
+          type: 'Monthly Hostel Rent & Utility Fee',
+          amount: 4500,
+          date: new Date().toISOString().split('T')[0],
+          method: activePaymentGateway + ' Online',
+          status: 'Paid'
+        };
+        payments.unshift(newInv);
+        HMS.set('payments', payments);
+        HMS.closeModal('payOnlineModal');
+        HMS.showToast('Payment of ৳ 4,500 successful via ' + activePaymentGateway + '!', 'success');
+        this.reset();
+        renderBoarderPayments();
+        viewReceipt(newInv.id);
+      });
+    });
+
+    function selectGateway(elem, name) {
+      document.querySelectorAll('.gateway-option').forEach(el => el.classList.remove('selected'));
+      elem.classList.add('selected');
+      activePaymentGateway = name;
+    }
+
+    function renderBoarderPayments() {
+      const allPayments = HMS.get('payments') || [];
+      // Include user's invoices plus general ones for rich table
+      let userPayments = allPayments.filter(p => p.studentId === '011211045' || p.studentName === 'Fahim Rahman');
+
+      if (userPayments.length === 0) {
+        userPayments = [
+          { id: 'INV-2026-001', studentId: '011211045', studentName: 'Fahim Rahman', room: 'A-302', type: 'Seat Rent & Mess Fee', amount: 8200, date: '2026-09-01', method: 'bKash Online', status: 'Paid' },
+          { id: 'INV-2026-089', studentId: '011211045', studentName: 'Fahim Rahman', room: 'A-302', type: 'August Room Rent', amount: 4500, date: '2026-08-05', method: 'Nagad Gateway', status: 'Paid' },
+          { id: 'INV-2026-072', studentId: '011211045', studentName: 'Fahim Rahman', room: 'A-302', type: 'July Room Rent & AC Charge', amount: 5200, date: '2026-07-04', method: 'bKash Online', status: 'Paid' }
+        ];
+      }
+
+      const totalPaid = userPayments.filter(p => p.status === 'Paid').reduce((acc, c) => acc + c.amount, 0);
+      const totalDue = userPayments.filter(p => p.status === 'Due').reduce((acc, c) => acc + c.amount, 0);
+
+      document.getElementById('statTotalPaid').textContent = '৳ ' + totalPaid.toLocaleString();
+      document.getElementById('statTotalDue').textContent = '৳ ' + totalDue.toLocaleString();
+
+      const tbody = document.getElementById('boarderPaymentsBody');
+      tbody.innerHTML = userPayments.map(p => `
+        <tr data-status="${p.status.toLowerCase()}">
+          <td class="font-mono"><strong>${p.id}</strong></td>
+          <td><strong>${p.type}</strong></td>
+          <td class="font-mono" style="font-weight: 700;">৳ ${p.amount.toLocaleString()}</td>
+          <td class="font-mono">${p.date}</td>
+          <td><span class="badge badge-secondary">${p.method}</span></td>
+          <td>
+            <span class="badge ${p.status === 'Paid' ? 'badge-success' : 'badge-danger'}">
+              ${p.status}
+            </span>
+          </td>
+          <td>
+            ${p.status === 'Paid' ? `
+              <button class="btn btn-outline btn-sm" onclick="viewReceipt('${p.id}')">📄 Voucher</button>
+            ` : `
+              <button class="btn btn-primary btn-sm" onclick="openPaymentModal('${p.id}', ${p.amount})">Pay Now</button>
+            `}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function openPaymentModal(invId, amount) {
+      document.getElementById('payModalAmount').textContent = '৳ ' + amount.toLocaleString();
+      HMS.openModal('payOnlineModal');
+    }
+
+    function viewReceipt(id) {
+      const allPayments = HMS.get('payments') || [];
+      const item = allPayments.find(p => p.id === id) || {
+        id: id,
+        studentName: 'Fahim Rahman',
+        room: 'A-302',
+        type: 'Hostel Seat Rent',
+        amount: 4500,
+        date: '2026-09-01',
+        method: 'bKash Online'
+      };
+
+      const body = document.getElementById('receiptModalBody');
+      body.innerHTML = `
+        <div style="text-align: center; margin-bottom: 1.25rem;">
+          <h4 style="font-size: 1.1rem; font-weight: 800; margin: 0; color: var(--primary);">UNITED INTERNATIONAL UNIVERSITY</h4>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">United City, Madani Avenue, Badda, Dhaka-1212</span>
+          <div style="font-weight: 700; font-size: 0.88rem; margin-top: 0.25rem; color: var(--text-main);">HOSTEL ADMINISTRATION &amp; ACCOUNTS WING</div>
+        </div>
+
+        <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; background: var(--bg-main); margin-bottom: 1rem; font-size: 0.88rem;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+            <span>Receipt No: <strong class="font-mono">${item.id}</strong></span>
+            <span>Date: <strong class="font-mono">${item.date}</strong></span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+            <span>Student Name: <strong>${item.studentName || 'Fahim Rahman'}</strong></span>
+            <span>Student ID: <strong class="font-mono">011211045</strong></span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span>Assigned Room: <strong>${item.room || 'A-302'}</strong></span>
+            <span>Payment Gateway: <strong>${item.method}</strong></span>
+          </div>
+        </div>
+
+        <table class="table" style="margin-bottom: 1.25rem;">
+          <thead>
+            <tr>
+              <th>Particulars</th>
+              <th style="text-align: right;">Amount (BDT)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>${item.type}</td>
+              <td style="text-align: right;" class="font-mono">৳ ${item.amount.toLocaleString()}</td>
+            </tr>
+            <tr style="font-weight: 800;">
+              <td>Net Total Paid</td>
+              <td style="text-align: right; color: var(--success);" class="font-mono">৳ ${item.amount.toLocaleString()}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 1rem; border-top: 1px dashed var(--border-color);">
+          <div style="font-size: 0.75rem; color: var(--text-muted);">
+            Status: <span class="badge badge-success">CLEARED &amp; VERIFIED</span><br>
+            System Generated Electronic Receipt
+          </div>
+          <div style="text-align: center; font-size: 0.8rem; color: var(--text-secondary);">
+            <div style="font-family: 'DM Sans', cursive; font-size: 1.1rem; color: var(--primary);">Nurul Islam</div>
+            Hostel Accounts Officer
+          </div>
+        </div>
+      `;
+      HMS.openModal('receiptModal');
+    }
+  </script>
+</body>
+</html>

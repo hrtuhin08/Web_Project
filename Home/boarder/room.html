@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Room &amp; Roommates | Resident Student - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>BOARDER</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">🏠</span> Student Portal</a>
+        <a href="profile.html" class="sidebar-link"><span class="sidebar-icon">👤</span> My Profile</a>
+
+        <div class="nav-category">Residence</div>
+        <a href="room.html" class="sidebar-link active"><span class="sidebar-icon">🛏️</span> My Room &amp; Roommates</a>
+        <a href="applications.html" class="sidebar-link"><span class="sidebar-icon">📝</span> Leave &amp; Seat Requests</a>
+
+        <div class="nav-category">Dining &amp; Finance</div>
+        <a href="meals.html" class="sidebar-link"><span class="sidebar-icon">🍲</span> Meal Management</a>
+        <a href="payments.html" class="sidebar-link"><span class="sidebar-icon">💳</span> Invoices &amp; Payments</a>
+
+        <div class="nav-category">Support &amp; Updates</div>
+        <a href="complaints.html" class="sidebar-link"><span class="sidebar-icon">⚠️</span> Complaints &amp; Repair</a>
+        <a href="notices.html" class="sidebar-link"><span class="sidebar-icon">📢</span> Notice Board</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">FR</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Fahim Rahman</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">BOARDER (011211045)</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Hostel Room &amp; Bed Allotment</h2>
+        </div>
+        <div class="topbar-right">
+          <a href="complaints.html" class="btn btn-outline btn-sm">Report Room Fault</a>
+          <button class="btn btn-primary btn-sm" onclick="HMS.openModal('roomTransferModal')">Apply for Room Swap</button>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Assigned Accommodation: Room A-302</h1>
+            <p class="page-desc">Padma International Hall &bull; Block A &bull; 3rd Floor &bull; East Wing</p>
+          </div>
+        </div>
+
+        <!-- Room Specs Banner -->
+        <div class="card" style="margin-bottom: 2rem; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem;">
+            <div>
+              <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Room No</span>
+              <h3 style="font-size: 1.4rem; font-weight: 800; color: var(--primary); margin: 0.2rem 0;">A-302</h3>
+              <span class="badge badge-primary">Double Occupancy</span>
+            </div>
+            <div>
+              <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Your Bed</span>
+              <h3 style="font-size: 1.4rem; font-weight: 800; color: var(--text-main); margin: 0.2rem 0;">Bed #1</h3>
+              <span style="font-size: 0.82rem; color: var(--text-secondary);">Window View (East)</span>
+            </div>
+            <div>
+              <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Capacity</span>
+              <h3 style="font-size: 1.4rem; font-weight: 800; color: var(--text-main); margin: 0.2rem 0;">2 / 2 Beds</h3>
+              <span class="badge badge-success">Fully Occupied</span>
+            </div>
+            <div>
+              <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Monthly Tariff</span>
+              <h3 style="font-size: 1.4rem; font-weight: 800; color: var(--text-main); margin: 0.2rem 0;">৳ 4,500</h3>
+              <span style="font-size: 0.82rem; color: var(--text-secondary);">Per Boarder / Month</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Roommates Roster -->
+        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem;">Room Residents</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+          <!-- Fahim (You) -->
+          <div class="card" style="border-top: 4px solid var(--primary); position: relative;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <div class="user-avatar" style="background: var(--primary); color: #fff; width: 48px; height: 48px; font-size: 1.2rem;">FR</div>
+                <div>
+                  <h4 style="font-size: 1.05rem; font-weight: 800; margin: 0;">Fahim Rahman</h4>
+                  <span style="font-size: 0.82rem; color: var(--text-muted);">Bed #1 &bull; Allocated</span>
+                </div>
+              </div>
+              <span class="badge badge-primary">You</span>
+            </div>
+            <div style="font-size: 0.88rem; display: flex; flex-direction: column; gap: 0.4rem; color: var(--text-secondary);">
+              <div>🎓 <strong>Dept:</strong> CSE (Undergraduate)</div>
+              <div>🆔 <strong>ID:</strong> <span class="font-mono">011211045</span></div>
+              <div>📞 <strong>Phone:</strong> +8801611223344</div>
+              <div>📍 <strong>Hometown:</strong> Chattogram</div>
+            </div>
+          </div>
+
+          <!-- Roommate: Tanvir -->
+          <div class="card" style="border-top: 4px solid #6366f1; position: relative;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <div class="user-avatar" style="background: #6366f1; color: #fff; width: 48px; height: 48px; font-size: 1.2rem;">TH</div>
+                <div>
+                  <h4 style="font-size: 1.05rem; font-weight: 800; margin: 0;">Tanvir Hossain</h4>
+                  <span style="font-size: 0.82rem; color: var(--text-muted);">Bed #2 &bull; Roommate</span>
+                </div>
+              </div>
+              <span class="badge badge-secondary">Roommate</span>
+            </div>
+            <div style="font-size: 0.88rem; display: flex; flex-direction: column; gap: 0.4rem; color: var(--text-secondary);">
+              <div>🎓 <strong>Dept:</strong> BBA (Marketing)</div>
+              <div>🆔 <strong>ID:</strong> <span class="font-mono">011212012</span></div>
+              <div>📞 <strong>Phone:</strong> +8801711889900</div>
+              <div>📍 <strong>Hometown:</strong> Sylhet</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Room Inventory & Facilities -->
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+              🛋️ Room Inventory &amp; Amenities Checklist
+            </h3>
+            <div class="table-responsive">
+              <table class="table" style="margin: 0;">
+                <thead>
+                  <tr>
+                    <th>Item Description</th>
+                    <th>Qty</th>
+                    <th>Condition</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Single Wooden Bed Frame + Orthopedic Mattress</td>
+                    <td>2</td>
+                    <td>Good</td>
+                    <td><span class="badge badge-success">Verified</span></td>
+                  </tr>
+                  <tr>
+                    <td>Executive Study Table &amp; Mesh Recliner Chair</td>
+                    <td>2</td>
+                    <td>Good</td>
+                    <td><span class="badge badge-success">Verified</span></td>
+                  </tr>
+                  <tr>
+                    <td>Double Door Full Wardrobe with Mirror</td>
+                    <td>2</td>
+                    <td>Good</td>
+                    <td><span class="badge badge-success">Verified</span></td>
+                  </tr>
+                  <tr>
+                    <td>Carrier 1.5 Ton Split Air Conditioner</td>
+                    <td>1</td>
+                    <td>Serviced Aug 2026</td>
+                    <td><span class="badge badge-success">Functional</span></td>
+                  </tr>
+                  <tr>
+                    <td>Ceiling Fan &amp; LED Study Illumination</td>
+                    <td>2</td>
+                    <td>Regulator Pending Repair</td>
+                    <td><span class="badge badge-warning">Ticket Open</span></td>
+                  </tr>
+                  <tr>
+                    <td>RJ-45 Gigabit Ethernet Port &amp; AP</td>
+                    <td>2</td>
+                    <td>100 Mbps Dedicated</td>
+                    <td><span class="badge badge-success">Active</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+              📜 Hall Rules &amp; Resident Code
+            </h3>
+            <ul style="padding-left: 1.25rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin: 0; display: flex; flex-direction: column; gap: 0.5rem;">
+              <li><strong>Quiet Hours:</strong> Maintain silence between 11:00 PM and 7:00 AM to facilitate academic study.</li>
+              <li><strong>Curfew:</strong> Hostel main gates close at 10:00 PM. Prior night passes are required for late entry.</li>
+              <li><strong>Electrical Appliances:</strong> Heavy heaters, induction cookers, and electric irons strictly prohibited in rooms.</li>
+              <li><strong>Key Custody:</strong> Do not duplicate or hand room keys to non-residents.</li>
+              <li><strong>Cleanliness:</strong> Housekeeping cleans room floors twice a week on Sunday and Wednesday mornings.</li>
+            </ul>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Room Transfer Modal -->
+  <div class="modal-overlay" id="roomTransferModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Request Room Change / Transfer</h3>
+        <button class="modal-close" onclick="HMS.closeModal('roomTransferModal')">&times;</button>
+      </div>
+      <form id="roomTransferForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Current Room</label>
+            <input type="text" class="form-control" value="Padma A-302 (Bed-1)" readonly style="background: var(--bg-main);">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Preferred Room Type / Hostel <span class="required">*</span></label>
+            <select id="transfer_pref" class="form-control" required>
+              <option value="Padma Single Suite">Padma International - Single Suite (৳ 7,500)</option>
+              <option value="Meghna Quad Dormitory">Meghna Scholars Hall - Quad Dorm (৳ 2,800)</option>
+              <option value="Padma Double Other Floor">Padma International - Double (2nd Floor)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Reason for Transfer Request <span class="required">*</span></label>
+            <textarea id="transfer_reason" class="form-control" rows="3" required placeholder="Specify academic reasons, medical requirements, or roommate mutual swaps..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="HMS.closeModal('roomTransferModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Submit Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+
+      document.getElementById('roomTransferForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const apps = HMS.get('applications') || [];
+        const newApp = {
+          id: 'APP-' + Math.floor(300 + Math.random() * 699),
+          studentName: 'Fahim Rahman',
+          studentId: '011211045',
+          dept: 'CSE',
+          hostel: document.getElementById('transfer_pref').value,
+          roomType: 'Room Transfer Request',
+          applyDate: new Date().toISOString().split('T')[0],
+          status: 'Pending'
+        };
+        apps.unshift(newApp);
+        HMS.set('applications', apps);
+        HMS.closeModal('roomTransferModal');
+        HMS.showToast('Room transfer application ' + newApp.id + ' submitted to Hostel Provost!', 'success');
+        this.reset();
+      });
+    });
+  </script>
+</body>
+</html>

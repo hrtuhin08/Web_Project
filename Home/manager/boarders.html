@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resident Directory | Manager Panel - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>MANAGER</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">📊</span> Overview</a>
+
+        <div class="nav-category">Resident Services</div>
+        <a href="rooms.html" class="sidebar-link"><span class="sidebar-icon">🛏️</span> Room Allocation</a>
+        <a href="boarders.html" class="sidebar-link active"><span class="sidebar-icon">👥</span> Boarders Roster</a>
+        <a href="applications.html" class="sidebar-link"><span class="sidebar-icon">📝</span> Seat Verification</a>
+
+        <div class="nav-category">Maintenance</div>
+        <a href="complaints.html" class="sidebar-link"><span class="sidebar-icon">⚠️</span> Facility Repairs</a>
+        <a href="reports.html" class="sidebar-link"><span class="sidebar-icon">📈</span> Floor Reports</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">MG</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Kabir Ahmed</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">HOSTEL MANAGER</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Resident Records</h2>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Active Residents &amp; Check-In Registry</h1>
+            <p class="page-desc">Daily resident headcounts, assigned keys, and immediate guardian emergency contacts.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-toolbar">
+            <div class="search-input-group">
+              <span class="icon">🔍</span>
+              <input type="text" id="mgrBrdSearch" class="form-control" placeholder="Search resident, room, phone...">
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="mgrBoardersTable">
+              <thead>
+                <tr>
+                  <th>Student Name</th>
+                  <th>Student ID</th>
+                  <th>Department</th>
+                  <th>Room &amp; Bed</th>
+                  <th>Student Phone</th>
+                  <th>Guardian Emergency Phone</th>
+                  <th>Key Card Status</th>
+                </tr>
+              </thead>
+              <tbody id="mgrBoardersBody">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+      const boarders = HMS.get('boarders') || [];
+      const tbody = document.getElementById('mgrBoardersBody');
+      tbody.innerHTML = boarders.map(b => `
+        <tr>
+          <td><strong>${b.name}</strong></td>
+          <td class="font-mono">${b.studentId}</td>
+          <td>${b.dept}</td>
+          <td><span class="badge badge-info">${b.room}</span></td>
+          <td class="font-mono">${b.phone}</td>
+          <td style="font-size: 0.85rem;">${b.guardian}</td>
+          <td><span class="badge badge-success">Issued &amp; Active</span></td>
+        </tr>
+      `).join('');
+
+      HMS.filterTable('mgrBrdSearch', 'mgrBoardersTable');
+    });
+  </script>
+</body>
+</html>

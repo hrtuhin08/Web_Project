@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manager Dashboard | UIU Hostel Management System</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>MANAGER</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link active"><span class="sidebar-icon">📊</span> Overview</a>
+
+        <div class="nav-category">Resident Services</div>
+        <a href="rooms.html" class="sidebar-link"><span class="sidebar-icon">🛏️</span> Room Allocation</a>
+        <a href="boarders.html" class="sidebar-link"><span class="sidebar-icon">👥</span> Boarders Roster</a>
+        <a href="applications.html" class="sidebar-link"><span class="sidebar-icon">📝</span> Seat Verification</a>
+
+        <div class="nav-category">Maintenance</div>
+        <a href="complaints.html" class="sidebar-link"><span class="sidebar-icon">⚠️</span> Facility Repairs</a>
+        <a href="reports.html" class="sidebar-link"><span class="sidebar-icon">📈</span> Floor Reports</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">MG</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Kabir Ahmed</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">HOSTEL MANAGER</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <div class="topbar-search">
+            <span class="topbar-search-icon">🔍</span>
+            <input type="text" class="form-control" placeholder="Search rooms, students...">
+          </div>
+        </div>
+        <div class="topbar-right">
+          <a href="rooms.html" class="btn btn-primary btn-sm">+ Allocate Bed</a>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Daily Floor &amp; Facility Operations</h1>
+            <p class="page-desc">Supervise on-premise room allocation, student check-ins, security turnstiles, and repairs.</p>
+          </div>
+        </div>
+
+        <div class="stats-grid-dashboard">
+          <div class="stat-card">
+            <div class="stat-icon primary">🛏️</div>
+            <div class="stat-meta">
+              <h3>44 Beds</h3>
+              <p>Available Vacancies</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon warning">📝</div>
+            <div class="stat-meta">
+              <h3>2 Pending</h3>
+              <p>Awaiting Verification</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon danger">⚠️</div>
+            <div class="stat-meta">
+              <h3>3 Active</h3>
+              <p>Maintenance Tickets</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon success">🛡️</div>
+            <div class="stat-meta">
+              <h3>Normal</h3>
+              <p>Campus Security Status</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+          <!-- Quick Allocation Action -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Manager Quick Actions</h3>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <a href="rooms.html" class="btn btn-secondary btn-sm" style="justify-content: flex-start;">🛏️ Inspect Vacant Beds by Floor</a>
+              <a href="applications.html" class="btn btn-secondary btn-sm" style="justify-content: flex-start;">📝 Review Candidate Applications</a>
+              <a href="complaints.html" class="btn btn-secondary btn-sm" style="justify-content: flex-start;">🔧 Assign Plumber / Electrician</a>
+              <a href="boarders.html" class="btn btn-secondary btn-sm" style="justify-content: flex-start;">👥 Emergency Guardian Contact Lookup</a>
+            </div>
+          </div>
+
+          <!-- Pending Complaints Pulse -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Urgent Repair Requests</h3>
+              <a href="complaints.html" class="btn btn-secondary btn-sm">All Tickets</a>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <div style="background: var(--bg-app); padding: 0.75rem 1rem; border-radius: var(--radius-sm); border-left: 4px solid var(--danger);">
+                <div style="display: flex; justify-content: space-between;">
+                  <strong>Ceiling Fan Regulator</strong>
+                  <span class="badge badge-danger">Room A-302</span>
+                </div>
+                <small style="color: var(--text-muted);">Assigned to: Electrician M. Rafiq (In Progress)</small>
+              </div>
+
+              <div style="background: var(--bg-app); padding: 0.75rem 1rem; border-radius: var(--radius-sm); border-left: 4px solid var(--warning);">
+                <div style="display: flex; justify-content: space-between;">
+                  <strong>Wing B Wi-Fi Disconnection</strong>
+                  <span class="badge badge-warning">Room B-301</span>
+                </div>
+                <small style="color: var(--text-muted);">Assigned to: IT Sub-Assistant</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+    });
+  </script>
+</body>
+</html>

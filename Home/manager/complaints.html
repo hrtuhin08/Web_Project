@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facility Repairs &amp; Maintenance | Manager Panel - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>MANAGER</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">📊</span> Overview</a>
+
+        <div class="nav-category">Resident Services</div>
+        <a href="rooms.html" class="sidebar-link"><span class="sidebar-icon">🛏️</span> Room Allocation</a>
+        <a href="boarders.html" class="sidebar-link"><span class="sidebar-icon">👥</span> Boarders Roster</a>
+        <a href="applications.html" class="sidebar-link"><span class="sidebar-icon">📝</span> Seat Verification</a>
+
+        <div class="nav-category">Maintenance</div>
+        <a href="complaints.html" class="sidebar-link active"><span class="sidebar-icon">⚠️</span> Facility Repairs</a>
+        <a href="reports.html" class="sidebar-link"><span class="sidebar-icon">📈</span> Floor Reports</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">MG</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Kabir Ahmed</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">HOSTEL MANAGER</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Hostel Facility Repairs</h2>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Maintenance Work Orders</h1>
+            <p class="page-desc">Supervise plumbing, electrical fixtures, RO filters, and structural repairs.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Ticket ID</th>
+                  <th>Student &amp; Room</th>
+                  <th>Trade Category</th>
+                  <th>Issue Description</th>
+                  <th>Priority</th>
+                  <th>Current Status</th>
+                  <th>Manager Action</th>
+                </tr>
+              </thead>
+              <tbody id="mgrCmpBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+      renderMgrComplaints();
+    });
+
+    function renderMgrComplaints() {
+      const complaints = HMS.get('complaints') || [];
+      const tbody = document.getElementById('mgrCmpBody');
+      tbody.innerHTML = complaints.map(c => `
+        <tr>
+          <td class="font-mono"><strong>${c.id}</strong></td>
+          <td><strong>${c.studentName}</strong> <br><small class="badge badge-secondary">${c.room}</small></td>
+          <td>${c.category}</td>
+          <td>${c.subject}</td>
+          <td>
+            <span class="badge ${c.priority === 'High' ? 'badge-danger' : 'badge-warning'}">
+              ${c.priority}
+            </span>
+          </td>
+          <td>
+            <span class="badge ${c.status === 'Resolved' ? 'badge-success' : 'badge-info'}">
+              ${c.status}
+            </span>
+          </td>
+          <td>
+            ${c.status !== 'Resolved' ? `
+              <button class="btn btn-primary btn-sm" onclick="assignWorker('${c.id}')">Assign Worker</button>
+              <button class="btn btn-success btn-sm" onclick="markDone('${c.id}')">Done</button>
+            ` : `
+              <span style="font-size: 0.82rem; color: var(--success); font-weight: 600;">✓ Work Verified</span>
+            `}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function assignWorker(id) {
+      HMS.showToast('Duty technician dispatched for ticket ' + id, 'info');
+    }
+
+    function markDone(id) {
+      let complaints = HMS.get('complaints') || [];
+      complaints = complaints.map(c => {
+        if (c.id === id) c.status = 'Resolved';
+        return c;
+      });
+      HMS.set('complaints', complaints);
+      HMS.showToast('Ticket ' + id + ' resolved and signed off.', 'success');
+      renderMgrComplaints();
+    }
+  </script>
+</body>
+</html>

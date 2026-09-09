@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dining Hall Attendance Scanner | Mess Panel - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>MESS</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">📊</span> Mess Overview</a>
+
+        <div class="nav-category">Dining Operations</div>
+        <a href="meals.html" class="sidebar-link"><span class="sidebar-icon">🍲</span> Daily Headcounts</a>
+        <a href="menu.html" class="sidebar-link"><span class="sidebar-icon">📋</span> Weekly Food Menu</a>
+        <a href="attendance.html" class="sidebar-link active"><span class="sidebar-icon">🎟️</span> Dining Hall Scanner</a>
+
+        <div class="nav-category">Quality &amp; Feedback</div>
+        <a href="complaints.html" class="sidebar-link"><span class="sidebar-icon">⚠️</span> Food Quality Issues</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">MS</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Nurul Huda</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">MESS SUPERVISOR</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Dining Attendance Terminal</h2>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Token Scanner &amp; Entry Log</h1>
+            <p class="page-desc">Validate boarder meal entitlement cards at the dining entrance in real time.</p>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+          <!-- Quick Token Check Card -->
+          <div class="card">
+            <h3 class="card-title" style="margin-bottom: 1rem;">Scan Student Card or ID</h3>
+            <form id="tokenScanForm">
+              <div class="form-group">
+                <label class="form-label">Student ID Number</label>
+                <div style="display: flex; gap: 0.5rem;">
+                  <input type="text" id="scan_id" class="form-control font-mono" placeholder="e.g. 011211045" autofocus required>
+                  <button type="submit" class="btn btn-primary">Verify</button>
+                </div>
+              </div>
+            </form>
+            <div id="scanResult" style="margin-top: 1rem; display: none;"></div>
+          </div>
+
+          <!-- Live Session Counts -->
+          <div class="card">
+            <h3 class="card-title" style="margin-bottom: 1rem;">Active Meal Shift Statistics</h3>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">
+                <span style="color: var(--text-muted);">Current Meal:</span>
+                <strong style="color: var(--primary);">Lunch Shift (12:30 - 03:00 PM)</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">
+                <span style="color: var(--text-muted);">Registered Entitlement:</span>
+                <strong class="font-mono">235 Boarders</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-muted);">Plates Served So Far:</span>
+                <strong class="font-mono text-success" id="platesServed">178 Plates (75.7%)</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Scan History Table -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Live Entry Activity Log</h3>
+            <span class="badge badge-success">Gate Turnstiles Online</span>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Student Name</th>
+                  <th>Student ID</th>
+                  <th>Assigned Room</th>
+                  <th>Meal Slot</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="scanLogBody">
+                <tr>
+                  <td class="font-mono">01:14 PM</td>
+                  <td><strong>Fahim Rahman</strong></td>
+                  <td class="font-mono">011211045</td>
+                  <td>A-302</td>
+                  <td>Lunch</td>
+                  <td><span class="badge badge-success">Verified &amp; Consumed</span></td>
+                </tr>
+                <tr>
+                  <td class="font-mono">01:12 PM</td>
+                  <td><strong>Tanvir Hossain</strong></td>
+                  <td class="font-mono">011212012</td>
+                  <td>B-301</td>
+                  <td>Lunch</td>
+                  <td><span class="badge badge-success">Verified &amp; Consumed</span></td>
+                </tr>
+                <tr>
+                  <td class="font-mono">01:08 PM</td>
+                  <td><strong>Anika Tabassum</strong></td>
+                  <td class="font-mono">011213054</td>
+                  <td>M-102</td>
+                  <td>Lunch</td>
+                  <td><span class="badge badge-success">Verified &amp; Consumed</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+
+      let count = 178;
+      document.getElementById('tokenScanForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const sid = document.getElementById('scan_id').value.trim();
+        const boarders = HMS.get('boarders') || [];
+        const found = boarders.find(b => b.studentId === sid);
+
+        const resultDiv = document.getElementById('scanResult');
+        resultDiv.style.display = 'block';
+
+        if (found) {
+          resultDiv.innerHTML = `
+            <div style="background: var(--success-bg); border: 1px solid var(--success-border); padding: 0.85rem; border-radius: var(--radius-sm); color: var(--success);">
+              <strong>✓ Valid Plate: ${found.name} (${found.room})</strong>
+              <div style="font-size: 0.85rem; margin-top: 0.2rem;">Lunch entitlement confirmed. No unpaid mess holds.</div>
+            </div>
+          `;
+          count++;
+          document.getElementById('platesServed').textContent = count + ' Plates (' + ((count / 235) * 100).toFixed(1) + '%)';
+
+          // Prepend to log
+          const logBody = document.getElementById('scanLogBody');
+          const row = document.createElement('tr');
+          const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          row.innerHTML = `
+            <td class="font-mono">${time}</td>
+            <td><strong>${found.name}</strong></td>
+            <td class="font-mono">${found.studentId}</td>
+            <td>${found.room}</td>
+            <td>Lunch</td>
+            <td><span class="badge badge-success">Verified &amp; Consumed</span></td>
+          `;
+          logBody.insertBefore(row, logBody.firstChild);
+
+          HMS.showToast('Plate confirmed for ' + found.name, 'success');
+        } else {
+          resultDiv.innerHTML = `
+            <div style="background: var(--danger-bg); border: 1px solid var(--danger-border); padding: 0.85rem; border-radius: var(--radius-sm); color: var(--danger);">
+              <strong>✕ ID Not Found (${sid})</strong>
+              <div style="font-size: 0.85rem; margin-top: 0.2rem;">Student not registered in current hostel semester roster.</div>
+            </div>
+          `;
+          HMS.showToast('Invalid ID or not opted into Lunch shift.', 'danger');
+        }
+        document.getElementById('scan_id').value = '';
+      });
+    });
+  </script>
+</body>
+</html>

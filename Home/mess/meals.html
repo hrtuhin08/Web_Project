@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Meal Headcounts | Mess Panel - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>MESS</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">📊</span> Mess Overview</a>
+
+        <div class="nav-category">Dining Operations</div>
+        <a href="meals.html" class="sidebar-link active"><span class="sidebar-icon">🍲</span> Daily Headcounts</a>
+        <a href="menu.html" class="sidebar-link"><span class="sidebar-icon">📋</span> Weekly Food Menu</a>
+        <a href="attendance.html" class="sidebar-link"><span class="sidebar-icon">🎟️</span> Dining Hall Scanner</a>
+
+        <div class="nav-category">Quality &amp; Feedback</div>
+        <a href="complaints.html" class="sidebar-link"><span class="sidebar-icon">⚠️</span> Food Quality Issues</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">MS</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Nurul Huda</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">MESS SUPERVISOR</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Resident Meal Confirmation Roster</h2>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Daily Meal Headcount Sheet</h1>
+            <p class="page-desc">Locked at 9:00 PM cutoff. Verify boarder plate entitlements for Breakfast, Lunch, and Dinner.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-toolbar">
+            <div class="search-input-group">
+              <span class="icon">🔍</span>
+              <input type="text" id="mealSearch" class="form-control" placeholder="Search resident, room...">
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="mealsTable">
+              <thead>
+                <tr>
+                  <th>Student Name</th>
+                  <th>Student ID</th>
+                  <th>Room</th>
+                  <th>Breakfast Status</th>
+                  <th>Lunch Status</th>
+                  <th>Dinner Status</th>
+                  <th>Dining Authorization</th>
+                </tr>
+              </thead>
+              <tbody id="mealsBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+      const boarders = HMS.get('boarders') || [];
+      const tbody = document.getElementById('mealsBody');
+      tbody.innerHTML = boarders.map((b, idx) => `
+        <tr>
+          <td><strong>${b.name}</strong></td>
+          <td class="font-mono">${b.studentId}</td>
+          <td><span class="badge badge-info">${b.room}</span></td>
+          <td><span class="badge ${idx % 4 === 0 ? 'badge-secondary' : 'badge-success'}">${idx % 4 === 0 ? 'OFF' : 'ON (Active)'}</span></td>
+          <td><span class="badge badge-success">ON (Active)</span></td>
+          <td><span class="badge ${idx % 3 === 0 ? 'badge-secondary' : 'badge-success'}">${idx % 3 === 0 ? 'OFF' : 'ON (Active)'}</span></td>
+          <td><span class="badge badge-success">Verified Active</span></td>
+        </tr>
+      `).join('');
+
+      HMS.filterTable('mealSearch', 'mealsTable');
+    });
+  </script>
+</body>
+</html>

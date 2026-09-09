@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Applications &amp; Gate Passes | Resident Student - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>BOARDER</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">🏠</span> Student Portal</a>
+        <a href="profile.html" class="sidebar-link"><span class="sidebar-icon">👤</span> My Profile</a>
+
+        <div class="nav-category">Residence</div>
+        <a href="room.html" class="sidebar-link"><span class="sidebar-icon">🛏️</span> My Room &amp; Roommates</a>
+        <a href="applications.html" class="sidebar-link active"><span class="sidebar-icon">📝</span> Leave &amp; Seat Requests</a>
+
+        <div class="nav-category">Dining &amp; Finance</div>
+        <a href="meals.html" class="sidebar-link"><span class="sidebar-icon">🍲</span> Meal Management</a>
+        <a href="payments.html" class="sidebar-link"><span class="sidebar-icon">💳</span> Invoices &amp; Payments</a>
+
+        <div class="nav-category">Support &amp; Updates</div>
+        <a href="complaints.html" class="sidebar-link"><span class="sidebar-icon">⚠️</span> Complaints &amp; Repair</a>
+        <a href="notices.html" class="sidebar-link"><span class="sidebar-icon">📢</span> Notice Board</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">FR</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Fahim Rahman</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">BOARDER (011211045)</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Resident Leave Passes &amp; Applications</h2>
+        </div>
+        <div class="topbar-right" style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-outline btn-sm" onclick="HMS.openModal('leavePassModal')">+ Request Leave Pass</button>
+          <button class="btn btn-primary btn-sm" onclick="HMS.openModal('roomSwapModal')">+ Room Transfer</button>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Leave Permissions &amp; Special Requests</h1>
+            <p class="page-desc">Apply for weekend home leave, late entry night passes, and room change petitions. Download authorized gate passes.</p>
+          </div>
+        </div>
+
+        <!-- Metric Pulse -->
+        <div class="stats-grid-dashboard">
+          <div class="stat-card">
+            <div class="stat-icon primary">📜</div>
+            <div class="stat-meta">
+              <h3 id="statTotalApps">4</h3>
+              <p>Total Submitted Applications</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon warning">⏳</div>
+            <div class="stat-meta">
+              <h3 id="statPendingApps">1</h3>
+              <p>Under Provost Review</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon success">✅</div>
+            <div class="stat-meta">
+              <h3 id="statApprovedApps">3</h3>
+              <p>Approved &amp; Passes Issued</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon info">🛡️</div>
+            <div class="stat-meta">
+              <h3>Guardian Verified</h3>
+              <p>Parental Consent Status</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Applications Table Card -->
+        <div class="card" style="margin-top: 1.5rem;">
+          <div class="table-toolbar">
+            <div class="search-input-group">
+              <span class="icon">🔍</span>
+              <input type="text" id="appSearch" class="form-control" placeholder="Search application ID, type, destination...">
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <select id="appStatusFilter" class="form-control" style="width: 150px;">
+                <option value="">All Statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="boarderAppsTable">
+              <thead>
+                <tr>
+                  <th>Application ID</th>
+                  <th>Request Type</th>
+                  <th>Destination / Target</th>
+                  <th>Departure / Date</th>
+                  <th>Submission</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="boarderAppsBody">
+                <!-- Dynamically loaded -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Leave Pass Request Modal -->
+  <div class="modal-overlay" id="leavePassModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Apply for Hostel Leave / Gate Pass</h3>
+        <button class="modal-close" onclick="HMS.closeModal('leavePassModal')">&times;</button>
+      </div>
+      <form id="leavePassForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Leave Category <span class="required">*</span></label>
+            <select id="lp_type" class="form-control" required>
+              <option value="Weekend Home Visit">Weekend Home Visit (Thu PM - Sat PM)</option>
+              <option value="Night Curfew Extension">Night Curfew Extension (Post 10:00 PM Library / Project)</option>
+              <option value="Medical Emergency Leave">Medical / Health Leave</option>
+              <option value="Official Academic Tour">University Academic / Sports Tour</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Departure Date <span class="required">*</span></label>
+              <input type="date" id="lp_dept_date" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Expected Return Date <span class="required">*</span></label>
+              <input type="date" id="lp_return_date" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Destination Address / Home City <span class="required">*</span></label>
+            <input type="text" id="lp_dest" class="form-control" required placeholder="e.g. Nasirabad, Chattogram">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Purpose / Reason <span class="required">*</span></label>
+            <textarea id="lp_reason" class="form-control" rows="2" required placeholder="State details of travel or emergency..."></textarea>
+          </div>
+
+          <div style="background: #f8fafc; padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.82rem; color: var(--text-secondary);">
+            <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;">
+              <input type="checkbox" required style="margin-top: 3px;">
+              <span>I confirm that my guardian (Abdur Rahman, +8801700112233) has been duly informed and approves this departure from the hostel premises.</span>
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="HMS.closeModal('leavePassModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Submit Leave Application</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Room Swap Modal -->
+  <div class="modal-overlay" id="roomSwapModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Room Transfer Application</h3>
+        <button class="modal-close" onclick="HMS.closeModal('roomSwapModal')">&times;</button>
+      </div>
+      <form id="roomSwapForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Current Room &amp; Bed</label>
+            <input type="text" class="form-control" value="Padma A-302 (Bed #1)" readonly style="background: var(--bg-main);">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Desired Hostel / Room Type <span class="required">*</span></label>
+            <select id="sw_hostel" class="form-control" required>
+              <option value="Padma Single Suite">Padma International - Single Suite (৳ 7,500)</option>
+              <option value="Meghna Scholars Double">Meghna Scholars Hall - Double Room (৳ 4,500)</option>
+              <option value="Padma Block B Triple">Padma International - Block B (৳ 3,500)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Reason for Request <span class="required">*</span></label>
+            <textarea id="sw_reason" class="form-control" rows="3" required placeholder="Specify academic reasons, mutual roommate adjustments, etc."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="HMS.closeModal('roomSwapModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Submit Transfer Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Authorized Gate Pass Digital Slip Modal -->
+  <div class="modal-overlay" id="gatePassModal">
+    <div class="modal-content" style="max-width: 500px;">
+      <div class="modal-header" style="border-bottom: 2px dashed var(--border-color);">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <div class="brand-icon" style="width: 28px; height: 28px; font-size: 0.8rem;">U</div>
+          <h3 class="modal-title">Official Security Gate Pass</h3>
+        </div>
+        <button class="modal-close" onclick="HMS.closeModal('gatePassModal')">&times;</button>
+      </div>
+      <div class="modal-body" id="gatePassModalBody">
+        <!-- Rendered by JS -->
+      </div>
+      <div class="modal-footer" style="justify-content: space-between;">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="HMS.closeModal('gatePassModal')">Close</button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="window.print()">🖨️ Print Pass Slip</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+      renderBoarderApps();
+
+      HMS.filterTable('appSearch', 'boarderAppsTable');
+
+      document.getElementById('appStatusFilter').addEventListener('change', function () {
+        const val = this.value.toLowerCase();
+        document.querySelectorAll('#boarderAppsBody tr').forEach(r => {
+          const st = r.getAttribute('data-status');
+          r.style.display = (!val || st === val) ? '' : 'none';
+        });
+      });
+
+      // Leave Form Submit
+      document.getElementById('leavePassForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const apps = HMS.get('applications') || [];
+        const newApp = {
+          id: 'APP-' + Math.floor(400 + Math.random() * 599),
+          studentName: 'Fahim Rahman',
+          studentId: '011211045',
+          dept: 'CSE',
+          hostel: document.getElementById('lp_dest').value.trim(),
+          roomType: document.getElementById('lp_type').value,
+          applyDate: new Date().toISOString().split('T')[0],
+          status: 'Approved' // auto-approve simulated weekend pass
+        };
+        apps.unshift(newApp);
+        HMS.set('applications', apps);
+        HMS.closeModal('leavePassModal');
+        HMS.showToast('Gate pass ' + newApp.id + ' approved and generated!', 'success');
+        this.reset();
+        renderBoarderApps();
+        showGatePass(newApp.id);
+      });
+
+      // Room Swap Submit
+      document.getElementById('roomSwapForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const apps = HMS.get('applications') || [];
+        const newApp = {
+          id: 'APP-' + Math.floor(600 + Math.random() * 399),
+          studentName: 'Fahim Rahman',
+          studentId: '011211045',
+          dept: 'CSE',
+          hostel: document.getElementById('sw_hostel').value,
+          roomType: 'Room Transfer Petition',
+          applyDate: new Date().toISOString().split('T')[0],
+          status: 'Pending'
+        };
+        apps.unshift(newApp);
+        HMS.set('applications', apps);
+        HMS.closeModal('roomSwapModal');
+        HMS.showToast('Transfer request ' + newApp.id + ' submitted to Hostel Provost!', 'success');
+        this.reset();
+        renderBoarderApps();
+      });
+    });
+
+    function renderBoarderApps() {
+      const allApps = HMS.get('applications') || [];
+      let userApps = allApps.filter(a => a.studentId === '011211045' || a.studentName === 'Fahim Rahman');
+
+      if (userApps.length === 0) {
+        userApps = [
+          { id: 'APP-108', studentName: 'Fahim Rahman', studentId: '011211045', dept: 'CSE', hostel: 'Nasirabad, Chattogram', roomType: 'Weekend Home Visit', applyDate: '2026-09-04', status: 'Approved' },
+          { id: 'APP-094', studentName: 'Fahim Rahman', studentId: '011211045', dept: 'CSE', hostel: 'UIU Central Library', roomType: 'Night Curfew Extension', applyDate: '2026-08-25', status: 'Approved' },
+          { id: 'APP-082', studentName: 'Fahim Rahman', studentId: '011211045', dept: 'CSE', hostel: 'Padma Single Suite', roomType: 'Room Transfer Petition', applyDate: '2026-08-12', status: 'Pending' }
+        ];
+      }
+
+      const pending = userApps.filter(a => a.status === 'Pending').length;
+      const approved = userApps.filter(a => a.status === 'Approved').length;
+
+      document.getElementById('statTotalApps').textContent = userApps.length;
+      document.getElementById('statPendingApps').textContent = pending;
+      document.getElementById('statApprovedApps').textContent = approved;
+
+      const tbody = document.getElementById('boarderAppsBody');
+      tbody.innerHTML = userApps.map(a => `
+        <tr data-status="${a.status.toLowerCase()}">
+          <td class="font-mono"><strong>${a.id}</strong></td>
+          <td><strong>${a.roomType}</strong></td>
+          <td>${a.hostel}</td>
+          <td>Thu 10 Sep &bull; 4:00 PM</td>
+          <td class="font-mono">${a.applyDate}</td>
+          <td>
+            <span class="badge ${a.status === 'Approved' ? 'badge-success' : a.status === 'Pending' ? 'badge-warning' : 'badge-danger'}">
+              ${a.status}
+            </span>
+          </td>
+          <td>
+            ${a.status === 'Approved' ? `
+              <button class="btn btn-success btn-sm" onclick="showGatePass('${a.id}')">🎟️ Gate Pass</button>
+            ` : `
+              <span style="font-size: 0.82rem; color: var(--text-muted);">In Review</span>
+            `}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function showGatePass(id) {
+      const allApps = HMS.get('applications') || [];
+      const app = allApps.find(a => a.id === id) || {
+        id: id,
+        studentName: 'Fahim Rahman',
+        studentId: '011211045',
+        roomType: 'Weekend Leave Pass',
+        hostel: 'Nasirabad, Chattogram',
+        applyDate: '2026-09-10'
+      };
+
+      document.getElementById('gatePassModalBody').innerHTML = `
+        <div style="text-align: center; margin-bottom: 1.25rem;">
+          <h4 style="font-size: 1.1rem; font-weight: 800; margin: 0; color: var(--primary);">UNITED INTERNATIONAL UNIVERSITY</h4>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Hostel Administration &bull; Security Clearance Wing</span>
+          <div style="margin-top: 0.5rem;">
+            <span class="badge badge-success" style="font-size: 0.85rem;">AUTHORIZED GATE PASS</span>
+          </div>
+        </div>
+
+        <div style="border: 2px dashed #cbd5e1; border-radius: var(--radius-md); padding: 1.25rem; background: var(--bg-main); margin-bottom: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <div>
+              <strong style="font-size: 1.05rem; display: block;">${app.studentName || 'Fahim Rahman'}</strong>
+              <span class="font-mono" style="font-size: 0.85rem; color: var(--text-muted);">ID: 011211045 &bull; Room: Padma A-302</span>
+            </div>
+            <div style="width: 45px; height: 45px; background: var(--primary); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800;">
+              FR
+            </div>
+          </div>
+
+          <div style="font-size: 0.88rem; display: flex; flex-direction: column; gap: 0.4rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <div><strong>Pass Type:</strong> ${app.roomType}</div>
+            <div><strong>Destination:</strong> ${app.hostel}</div>
+            <div><strong>Approved Window:</strong> 10 Sep 2026 (4:00 PM) to 12 Sep 2026 (9:30 PM)</div>
+            <div><strong>Guardian Emergency:</strong> +8801700112233</div>
+          </div>
+
+          <div style="text-align: center; margin-top: 1.25rem; padding-top: 0.75rem; border-top: 1px solid var(--border-color);">
+            <div style="font-family: var(--font-mono); font-weight: 700; letter-spacing: 4px; font-size: 1.2rem; color: #1e293b;">
+              ||| | |||| | ||||| |||
+            </div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+              PASS TOKEN: UIU-GP-${app.id}-AUTH
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; font-size: 0.8rem; color: var(--text-secondary);">
+          <div>
+            Biometric Exit / Entry Turnstile Active<br>
+            Main Gate Warden Sign-off
+          </div>
+          <div style="text-align: right;">
+            <strong>Dr. Rafiqul Islam</strong><br>
+            <span style="color: var(--text-muted);">Hostel Provost</span>
+          </div>
+        </div>
+      `;
+      HMS.openModal('gatePassModal');
+    }
+  </script>
+</body>
+</html>

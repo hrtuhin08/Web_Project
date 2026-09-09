@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile | Resident Student - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>BOARDER</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">🏠</span> Student Portal</a>
+        <a href="profile.html" class="sidebar-link active"><span class="sidebar-icon">👤</span> My Profile</a>
+
+        <div class="nav-category">Residence</div>
+        <a href="room.html" class="sidebar-link"><span class="sidebar-icon">🛏️</span> My Room &amp; Roommates</a>
+        <a href="applications.html" class="sidebar-link"><span class="sidebar-icon">📝</span> Leave &amp; Seat Requests</a>
+
+        <div class="nav-category">Dining &amp; Finance</div>
+        <a href="meals.html" class="sidebar-link"><span class="sidebar-icon">🍲</span> Meal Management</a>
+        <a href="payments.html" class="sidebar-link"><span class="sidebar-icon">💳</span> Invoices &amp; Payments</a>
+
+        <div class="nav-category">Support &amp; Updates</div>
+        <a href="complaints.html" class="sidebar-link"><span class="sidebar-icon">⚠️</span> Complaints &amp; Repair</a>
+        <a href="notices.html" class="sidebar-link"><span class="sidebar-icon">📢</span> Notice Board</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">FR</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Fahim Rahman</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">BOARDER (011211045)</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Resident Profile &amp; ID Card</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-primary btn-sm" onclick="HMS.openModal('editProfileModal')">Edit Contact Info</button>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <!-- Profile Banner -->
+        <div class="card" style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;">
+          <div style="position: relative;">
+            <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 800; border: 4px solid #fff; box-shadow: var(--shadow-md);">
+              FR
+            </div>
+            <span style="position: absolute; bottom: 4px; right: 4px; width: 18px; height: 18px; background: var(--success); border-radius: 50%; border: 3px solid #fff;"></span>
+          </div>
+
+          <div style="flex: 1;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.35rem;">
+              <h1 style="font-size: 1.6rem; font-weight: 800; margin: 0;" class="user-name-display">Fahim Rahman</h1>
+              <span class="badge badge-success">Verified Resident</span>
+            </div>
+            <p style="color: var(--text-secondary); margin: 0 0 0.5rem 0; font-size: 0.95rem;">
+              B.Sc. in Computer Science &amp; Engineering &bull; Student ID: <strong class="font-mono">011211045</strong>
+            </p>
+            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; font-size: 0.85rem; color: var(--text-muted);">
+              <span>📧 boarder@uiu.ac.bd</span>
+              <span id="profPhoneDisplay">📞 +8801611223344</span>
+              <span>🩸 Blood Group: <strong>B+ (Positive)</strong></span>
+            </div>
+          </div>
+
+          <div>
+            <button class="btn btn-outline btn-sm" onclick="printResidentCard()">Print ID Card</button>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+          <!-- Academic & University Records -->
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+              🎓 Academic Enrollment
+            </h3>
+            <table class="table" style="margin: 0;">
+              <tbody>
+                <tr>
+                  <td style="width: 40%; color: var(--text-muted); font-weight: 600;">Department</td>
+                  <td><strong>Computer Science &amp; Engineering</strong></td>
+                </tr>
+                <tr>
+                  <td style="color: var(--text-muted); font-weight: 600;">Degree Level</td>
+                  <td>Undergraduate (B.Sc.)</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--text-muted); font-weight: 600;">Student ID</td>
+                  <td class="font-mono"><strong>011211045</strong></td>
+                </tr>
+                <tr>
+                  <td style="color: var(--text-muted); font-weight: 600;">Current Trimester</td>
+                  <td>9th Trimester (Senior)</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--text-muted); font-weight: 600;">Academic Status</td>
+                  <td><span class="badge badge-success">Regular / Good Standing</span></td>
+                </tr>
+                <tr>
+                  <td style="color: var(--text-muted); font-weight: 600;">Faculty Advisor</td>
+                  <td>Prof. Dr. Hasan Sarwar</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Hostel Allocation Information -->
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+              🏢 Hostel Allocation Details
+            </h3>
+            <table class="table" style="margin: 0;">
+              <tbody>
+                <tr>
+                  <td style="width: 40%; color: var(--text-muted); font-weight: 600;">Assigned Hall</td>
+                  <td><strong>Padma International Hall</strong></td>
+                </tr>
+                <tr>
+                  <td style="color: var(--text-muted); font-weight: 600;">Block &amp; Floor</td>
+                  <td>Block A &bull; 3rd Floor</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--text-muted); font-weight: 600;">Room Number</td>
+                  <td><span class="badge badge-secondary" style="font-size: 0.88rem;">Room A-302</span></td>
+                </tr>
+                <tr>
+                  <td style="color: var(--text-muted); font-weight: 600;">Bed Allotment</td>
+                  <td><strong>Bed #1 (Window View)</strong></td>
+                </tr>
+                <tr>
+                  <td style="color: var(--text-muted); font-weight: 600;">Room Category</td>
+                  <td>Double Occupancy AC</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--text-muted); font-weight: 600;">Monthly Rent</td>
+                  <td><strong>৳ 4,500 / month</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Emergency Contacts & Guardian -->
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+              🛡️ Emergency &amp; Guardian Info
+            </h3>
+            <table class="table" style="margin: 0;">
+              <tbody>
+                <tr>
+                  <td style="width: 40%; color: var(--text-muted); font-weight: 600;">Guardian Name</td>
+                  <td id="profGuardianName"><strong>Abdur Rahman</strong></td>
+                </tr>
+                <tr>
+                  <td style="color: var(--text-muted); font-weight: 600;">Relationship</td>
+                  <td>Father</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--text-muted); font-weight: 600;">Guardian Mobile</td>
+                  <td id="profGuardianPhone" class="font-mono"><strong>+8801700112233</strong></td>
+                </tr>
+                <tr>
+                  <td style="color: var(--text-muted); font-weight: 600;">Permanent City</td>
+                  <td>Nasirabad, Chattogram</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--text-muted); font-weight: 600;">National NID / Birth Cert</td>
+                  <td class="font-mono">1999827361928374</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Account Security -->
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+              🔒 Security &amp; Credentials
+            </h3>
+            <form id="changePasswordForm">
+              <div class="form-group" style="margin-bottom: 1rem;">
+                <label class="form-label">Current Password</label>
+                <input type="password" class="form-control" placeholder="••••••••" required>
+              </div>
+              <div class="form-group" style="margin-bottom: 1rem;">
+                <label class="form-label">New Password</label>
+                <input type="password" class="form-control" placeholder="••••••••" required>
+              </div>
+              <div class="form-group" style="margin-bottom: 1.25rem;">
+                <label class="form-label">Confirm New Password</label>
+                <input type="password" class="form-control" placeholder="••••••••" required>
+              </div>
+              <button type="submit" class="btn btn-outline btn-sm">Update Password</button>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <div class="modal-overlay" id="editProfileModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Update Contact &amp; Emergency Details</h3>
+        <button class="modal-close" onclick="HMS.closeModal('editProfileModal')">&times;</button>
+      </div>
+      <form id="editProfileForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Student Phone Number <span class="required">*</span></label>
+            <input type="tel" id="ep_phone" class="form-control" value="+8801611223344" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Guardian Name <span class="required">*</span></label>
+            <input type="text" id="ep_guardian" class="form-control" value="Abdur Rahman" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Guardian Emergency Contact <span class="required">*</span></label>
+            <input type="tel" id="ep_gphone" class="form-control" value="+8801700112233" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Permanent Address</label>
+            <textarea id="ep_address" class="form-control" rows="2">House 24, Road 5, Nasirabad, Chattogram</textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="HMS.closeModal('editProfileModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+
+      document.getElementById('editProfileForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const p = document.getElementById('ep_phone').value;
+        const g = document.getElementById('ep_guardian').value;
+        const gp = document.getElementById('ep_gphone').value;
+
+        document.getElementById('profPhoneDisplay').textContent = '📞 ' + p;
+        document.getElementById('profGuardianName').innerHTML = '<strong>' + g + '</strong>';
+        document.getElementById('profGuardianPhone').textContent = gp;
+
+        HMS.closeModal('editProfileModal');
+        HMS.showToast('Profile contact records updated successfully!', 'success');
+      });
+
+      document.getElementById('changePasswordForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        HMS.showToast('Password changed successfully! Keep your credentials secure.', 'success');
+        this.reset();
+      });
+    });
+
+    function printResidentCard() {
+      window.print();
+    }
+  </script>
+</body>
+</html>

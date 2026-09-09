@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hostel Notice Board | Resident Student - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .notice-card {
+      border-left: 4px solid var(--primary);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .notice-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .notice-card.urgent {
+      border-left-color: var(--danger);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>BOARDER</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">🏠</span> Student Portal</a>
+        <a href="profile.html" class="sidebar-link"><span class="sidebar-icon">👤</span> My Profile</a>
+
+        <div class="nav-category">Residence</div>
+        <a href="room.html" class="sidebar-link"><span class="sidebar-icon">🛏️</span> My Room &amp; Roommates</a>
+        <a href="applications.html" class="sidebar-link"><span class="sidebar-icon">📝</span> Leave &amp; Seat Requests</a>
+
+        <div class="nav-category">Dining &amp; Finance</div>
+        <a href="meals.html" class="sidebar-link"><span class="sidebar-icon">🍲</span> Meal Management</a>
+        <a href="payments.html" class="sidebar-link"><span class="sidebar-icon">💳</span> Invoices &amp; Payments</a>
+
+        <div class="nav-category">Support &amp; Updates</div>
+        <a href="complaints.html" class="sidebar-link"><span class="sidebar-icon">⚠️</span> Complaints &amp; Repair</a>
+        <a href="notices.html" class="sidebar-link active"><span class="sidebar-icon">📢</span> Notice Board</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">FR</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Fahim Rahman</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">BOARDER (011211045)</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Hostel Announcements &amp; Circulars</h2>
+        </div>
+        <div class="topbar-right">
+          <span style="font-size: 0.88rem; color: var(--text-muted);">Academic Year 2026</span>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Digital Notice Board</h1>
+            <p class="page-desc">Official administration notifications, mess timings, maintenance shutdowns, and campus rules.</p>
+          </div>
+        </div>
+
+        <!-- Filter Toolbar -->
+        <div class="card" style="margin-bottom: 1.5rem; padding: 1rem 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div class="search-input-group" style="flex: 1; min-width: 250px;">
+              <span class="icon">🔍</span>
+              <input type="text" id="noticeSearch" class="form-control" placeholder="Search notices by title, keyword, or author...">
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <button class="btn btn-outline btn-sm active" id="btnFilterAll" onclick="filterNoticeCategory('all')">All Notices</button>
+              <button class="btn btn-outline btn-sm" id="btnFilterUrgent" onclick="filterNoticeCategory('Urgent')">🔴 Urgent Only</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notices Container -->
+        <div id="boarderNoticesList" style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <!-- Dynamically populated -->
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Read Full Circular Modal -->
+  <div class="modal-overlay" id="fullNoticeModal">
+    <div class="modal-content" style="max-width: 600px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <div class="brand-icon" style="width: 28px; height: 28px; font-size: 0.8rem;">U</div>
+          <h3 class="modal-title">Hostel Official Circular</h3>
+        </div>
+        <button class="modal-close" onclick="HMS.closeModal('fullNoticeModal')">&times;</button>
+      </div>
+      <div class="modal-body" id="fullNoticeBody">
+        <!-- Rendered by JS -->
+      </div>
+      <div class="modal-footer" style="justify-content: space-between;">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="HMS.closeModal('fullNoticeModal')">Close</button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="window.print()">🖨️ Print Circular</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    let activeFilter = 'all';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+      renderBoarderNotices();
+
+      document.getElementById('noticeSearch').addEventListener('input', function () {
+        renderBoarderNotices(this.value.trim().toLowerCase());
+      });
+    });
+
+    function filterNoticeCategory(type) {
+      activeFilter = type;
+      document.getElementById('btnFilterAll').classList.toggle('active', type === 'all');
+      document.getElementById('btnFilterUrgent').classList.toggle('active', type === 'Urgent');
+      renderBoarderNotices(document.getElementById('noticeSearch').value.trim().toLowerCase());
+    }
+
+    function renderBoarderNotices(searchQuery = '') {
+      let notices = HMS.get('notices') || [];
+
+      if (activeFilter !== 'all') {
+        notices = notices.filter(n => n.priority === activeFilter);
+      }
+
+      if (searchQuery) {
+        notices = notices.filter(n => 
+          n.title.toLowerCase().includes(searchQuery) ||
+          n.content.toLowerCase().includes(searchQuery) ||
+          n.author.toLowerCase().includes(searchQuery)
+        );
+      }
+
+      const container = document.getElementById('boarderNoticesList');
+      if (notices.length === 0) {
+        container.innerHTML = `
+          <div class="card" style="text-align: center; padding: 3rem;">
+            <p style="color: var(--text-muted); font-size: 1.1rem; margin: 0;">No notices found matching your criteria.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = notices.map(n => `
+        <div class="card notice-card ${n.priority === 'Urgent' ? 'urgent' : ''}">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span class="badge ${n.priority === 'Urgent' ? 'badge-danger' : 'badge-primary'}">${n.priority}</span>
+              <span class="badge badge-secondary">${n.target || 'All Residents'}</span>
+              <span class="font-mono" style="font-size: 0.8rem; color: var(--text-muted);">${n.date}</span>
+            </div>
+            <span style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">${n.author}</span>
+          </div>
+
+          <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text-main);">${n.title}</h3>
+          <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">${n.content}</p>
+
+          <div style="display: flex; justify-content: flex-end;">
+            <button class="btn btn-outline btn-sm" onclick="readFullNotice('${n.id}')">Read Full Circular &rarr;</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function readFullNotice(id) {
+      const notices = HMS.get('notices') || [];
+      const n = notices.find(item => item.id === id);
+      if (!n) return;
+
+      document.getElementById('fullNoticeBody').innerHTML = `
+        <div style="text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.25rem;">
+          <h4 style="font-size: 1.15rem; font-weight: 800; color: var(--primary); margin: 0;">UNITED INTERNATIONAL UNIVERSITY</h4>
+          <span style="font-size: 0.82rem; color: var(--text-muted);">Office of the Hostel Provost &bull; United City, Madani Avenue, Dhaka</span>
+          <div style="margin-top: 0.5rem; font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-muted);">
+            Circular Ref: UIU/HOSTEL/${n.id}/2026 &bull; Published: ${n.date}
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <span class="badge ${n.priority === 'Urgent' ? 'badge-danger' : 'badge-info'}" style="margin-bottom: 0.5rem;">${n.priority} Notice</span>
+          <h2 style="font-size: 1.3rem; font-weight: 800; color: var(--text-main); line-height: 1.4; margin: 0 0 0.75rem 0;">${n.title}</h2>
+          <div style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1rem;">Target: <strong>${n.target || 'All Residents'}</strong></div>
+        </div>
+
+        <div style="background: var(--bg-main); padding: 1.25rem; border-radius: var(--radius-md); font-size: 0.95rem; line-height: 1.7; color: var(--text-main); margin-bottom: 1.5rem;">
+          ${n.content}
+          <br><br>
+          For any clarifications or assistance, please reach out to the Hall Office or call the warden helpline during office hours.
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 0.75rem;">
+          <div style="font-size: 0.78rem; color: var(--text-muted);">
+            Hostel Information Desk<br>
+            Emergency: +8801811223344
+          </div>
+          <div style="text-align: center; font-size: 0.82rem;">
+            <strong>${n.author}</strong><br>
+            <span style="color: var(--text-muted);">UIU Hostel Management</span>
+          </div>
+        </div>
+      `;
+      HMS.openModal('fullNoticeModal');
+    }
+  </script>
+</body>
+</html>

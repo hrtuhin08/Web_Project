@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Settings | Admin Panel - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>ADMIN</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">📊</span> Overview</a>
+
+        <div class="nav-category">Accommodations</div>
+        <a href="boarders.html" class="sidebar-link"><span class="sidebar-icon">👥</span> Boarder Directory</a>
+        <a href="rooms.html" class="sidebar-link"><span class="sidebar-icon">🛏️</span> Room &amp; Bed Matrix</a>
+        <a href="applications.html" class="sidebar-link"><span class="sidebar-icon">📝</span> Seat Applications</a>
+
+        <div class="nav-category">Operations</div>
+        <a href="payments.html" class="sidebar-link"><span class="sidebar-icon">💳</span> Fee &amp; Billing</a>
+        <a href="complaints.html" class="sidebar-link"><span class="sidebar-icon">⚠️</span> Complaints</a>
+        <a href="notices.html" class="sidebar-link"><span class="sidebar-icon">📢</span> Notice Board</a>
+
+        <div class="nav-category">Administration</div>
+        <a href="users.html" class="sidebar-link"><span class="sidebar-icon">🛡️</span> User Management</a>
+        <a href="reports.html" class="sidebar-link"><span class="sidebar-icon">📈</span> Reports &amp; Analytics</a>
+        <a href="settings.html" class="sidebar-link active"><span class="sidebar-icon">⚙️</span> Settings</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">AD</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Admin User</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">ADMINISTRATOR</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">System Configuration</h2>
+        </div>
+      </header>
+
+      <main class="dashboard-content" style="max-width: 860px;">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Hostel &amp; Dining Settings</h1>
+            <p class="page-desc">Global platform configuration, mess cutoff timers, and administrative parameters.</p>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 2rem;">
+          <h3 class="card-title" style="margin-bottom: 1.25rem;">Institutional Identity</h3>
+          <form id="generalSettingsForm">
+            <div class="form-group">
+              <label class="form-label">Official Hostel Organization Name</label>
+              <input type="text" id="set_name" class="form-control" value="United International University Hostel" required>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Contact Support Phone</label>
+                <input type="text" id="set_phone" class="form-control" value="+880 9604-848848">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Official Inquiries Email</label>
+                <input type="email" id="set_email" class="form-control" value="hostel@uiu.ac.bd">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Campus Physical Location</label>
+              <input type="text" id="set_address" class="form-control" value="United City, Madani Avenue, Badda, Dhaka 1212">
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-sm">Save Institution Profile</button>
+          </form>
+        </div>
+
+        <div class="card" style="margin-bottom: 2rem;">
+          <h3 class="card-title" style="margin-bottom: 1.25rem;">Mess Automation &amp; Curfew Timers</h3>
+          <form id="messSettingsForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Daily Meal Cutoff Lock Time</label>
+                <input type="time" id="set_cutoff" class="form-control" value="21:00" required>
+                <small style="color: var(--text-muted);">Boarders cannot toggle breakfast/lunch/dinner after this time.</small>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Base Dynamic Meal Rate (BDT)</label>
+                <input type="number" id="set_rate" class="form-control" value="85" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-check">
+                <input type="checkbox" id="set_admission_open" checked>
+                <span><strong>Admissions Open:</strong> Allow prospective students to register online.</span>
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-sm">Update Mess Rules</button>
+          </form>
+        </div>
+
+        <div class="card" style="border-color: var(--danger-border); background: var(--danger-bg);">
+          <h3 class="card-title" style="color: var(--danger); margin-bottom: 0.5rem;">Reset Demo Data Store</h3>
+          <p style="font-size: 0.9rem; margin-bottom: 1rem; color: #7f1d1d;">Reinitialize all LocalStorage records (boarders, rooms, applications, invoices, complaints) to original mock defaults.</p>
+          <button type="button" class="btn btn-danger btn-sm" onclick="resetDefaults()">Reset LocalStorage Data</button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+
+      document.getElementById('generalSettingsForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        HMS.showToast('Institutional profile updated successfully!', 'success');
+      });
+
+      document.getElementById('messSettingsForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const cutoff = document.getElementById('set_cutoff').value;
+        const rate = document.getElementById('set_rate').value;
+        HMS.set('cutoffTime', cutoff);
+        HMS.set('mealRate', parseInt(rate) || 85);
+        HMS.showToast('Mess rules and cutoff lock time (' + cutoff + ') updated!', 'success');
+      });
+    });
+
+    function resetDefaults() {
+      if (confirm('Are you sure you want to reset all data to default mock records?')) {
+        localStorage.clear();
+        HMS.init();
+        HMS.showToast('All records reset to initial demo state.', 'info');
+        setTimeout(() => location.reload(), 600);
+      }
+    }
+  </script>
+</body>
+</html>

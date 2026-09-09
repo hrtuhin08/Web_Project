@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seat Applications | Admin Panel - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>ADMIN</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">📊</span> Overview</a>
+
+        <div class="nav-category">Accommodations</div>
+        <a href="boarders.html" class="sidebar-link"><span class="sidebar-icon">👥</span> Boarder Directory</a>
+        <a href="rooms.html" class="sidebar-link"><span class="sidebar-icon">🛏️</span> Room &amp; Bed Matrix</a>
+        <a href="applications.html" class="sidebar-link active"><span class="sidebar-icon">📝</span> Seat Applications</a>
+
+        <div class="nav-category">Operations</div>
+        <a href="payments.html" class="sidebar-link"><span class="sidebar-icon">💳</span> Fee &amp; Billing</a>
+        <a href="complaints.html" class="sidebar-link"><span class="sidebar-icon">⚠️</span> Complaints</a>
+        <a href="notices.html" class="sidebar-link"><span class="sidebar-icon">📢</span> Notice Board</a>
+
+        <div class="nav-category">Administration</div>
+        <a href="users.html" class="sidebar-link"><span class="sidebar-icon">🛡️</span> User Management</a>
+        <a href="reports.html" class="sidebar-link"><span class="sidebar-icon">📈</span> Reports &amp; Analytics</a>
+        <a href="settings.html" class="sidebar-link"><span class="sidebar-icon">⚙️</span> Settings</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">AD</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Admin User</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">ADMINISTRATOR</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Admission Applications</h2>
+        </div>
+        <div class="topbar-right">
+          <a href="../register.html" target="_blank" class="btn btn-secondary btn-sm">Public Application Form ↗</a>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Candidate Applications Queue</h1>
+            <p class="page-desc">Verify student university credentials, approve hostel eligibility, or reject applications.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-toolbar">
+            <div class="search-input-group">
+              <span class="icon">🔍</span>
+              <input type="text" id="appSearch" class="form-control" placeholder="Search applicant, student ID, department...">
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <select id="statusFilter" class="form-control" style="width: 160px;">
+                <option value="">All Statuses</option>
+                <option value="Pending">Pending Only</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="appsTable">
+              <thead>
+                <tr>
+                  <th>App ID</th>
+                  <th>Student Name</th>
+                  <th>Student ID</th>
+                  <th>Department</th>
+                  <th>Hostel Preference</th>
+                  <th>Room Preference</th>
+                  <th>Apply Date</th>
+                  <th>Status</th>
+                  <th>Decision Actions</th>
+                </tr>
+              </thead>
+              <tbody id="appsTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+      renderApps();
+
+      HMS.filterTable('appSearch', 'appsTable');
+
+      document.getElementById('statusFilter').addEventListener('change', function () {
+        const st = this.value.toLowerCase();
+        document.querySelectorAll('#appsTableBody tr').forEach(r => {
+          const rowSt = r.getAttribute('data-status');
+          r.style.display = (!st || rowSt === st) ? '' : 'none';
+        });
+      });
+    });
+
+    function renderApps() {
+      const apps = HMS.get('applications') || [];
+      const tbody = document.getElementById('appsTableBody');
+      tbody.innerHTML = apps.map(a => `
+        <tr data-status="${a.status.toLowerCase()}">
+          <td class="font-mono"><strong>${a.id}</strong></td>
+          <td><strong>${a.studentName}</strong></td>
+          <td class="font-mono">${a.studentId}</td>
+          <td>${a.dept}</td>
+          <td>${a.hostel}</td>
+          <td>${a.roomType}</td>
+          <td class="font-mono">${a.applyDate}</td>
+          <td>
+            <span class="badge ${a.status === 'Approved' ? 'badge-success' : a.status === 'Rejected' ? 'badge-danger' : 'badge-warning'}">
+              ${a.status}
+            </span>
+          </td>
+          <td>
+            ${a.status === 'Pending' ? `
+              <button class="btn btn-success btn-sm" onclick="setAppStatus('${a.id}', 'Approved')">Approve</button>
+              <button class="btn btn-danger btn-sm" onclick="setAppStatus('${a.id}', 'Rejected')">Reject</button>
+            ` : `
+              <span style="font-size: 0.85rem; color: var(--text-muted);">Decided</span>
+            `}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function setAppStatus(id, newStatus) {
+      let apps = HMS.get('applications') || [];
+      apps = apps.map(a => {
+        if (a.id === id) a.status = newStatus;
+        return a;
+      });
+      HMS.set('applications', apps);
+      HMS.showToast('Application ' + id + ' marked as ' + newStatus, newStatus === 'Approved' ? 'success' : 'danger');
+      renderApps();
+    }
+  </script>
+</body>
+</html>

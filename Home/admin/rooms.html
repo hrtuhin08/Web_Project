@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Room &amp; Bed Matrix | Admin Panel - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>ADMIN</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">📊</span> Overview</a>
+
+        <div class="nav-category">Accommodations</div>
+        <a href="boarders.html" class="sidebar-link"><span class="sidebar-icon">👥</span> Boarder Directory</a>
+        <a href="rooms.html" class="sidebar-link active"><span class="sidebar-icon">🛏️</span> Room &amp; Bed Matrix</a>
+        <a href="applications.html" class="sidebar-link"><span class="sidebar-icon">📝</span> Seat Applications</a>
+
+        <div class="nav-category">Operations</div>
+        <a href="payments.html" class="sidebar-link"><span class="sidebar-icon">💳</span> Fee &amp; Billing</a>
+        <a href="complaints.html" class="sidebar-link"><span class="sidebar-icon">⚠️</span> Complaints</a>
+        <a href="notices.html" class="sidebar-link"><span class="sidebar-icon">📢</span> Notice Board</a>
+
+        <div class="nav-category">Administration</div>
+        <a href="users.html" class="sidebar-link"><span class="sidebar-icon">🛡️</span> User Management</a>
+        <a href="reports.html" class="sidebar-link"><span class="sidebar-icon">📈</span> Reports &amp; Analytics</a>
+        <a href="settings.html" class="sidebar-link"><span class="sidebar-icon">⚙️</span> Settings</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">AD</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Admin User</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">ADMINISTRATOR</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Hostel Wings, Rooms &amp; Beds</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-primary btn-sm" onclick="HMS.openModal('addRoomModal')">+ Add Room</button>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Room &amp; Bed Inventory</h1>
+            <p class="page-desc">Manage physical residential capacity, bed allocation statuses, room tariffs, and floor layouts.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-toolbar">
+            <div class="search-input-group">
+              <span class="icon">🔍</span>
+              <input type="text" id="roomSearch" class="form-control" placeholder="Search room no, wing, floor...">
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <select id="wingFilter" class="form-control" style="width: 190px;">
+                <option value="">All Hostels &amp; Wings</option>
+                <option value="padma">Padma International</option>
+                <option value="meghna">Meghna Scholars Hall</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="roomsTable">
+              <thead>
+                <tr>
+                  <th>Room Code</th>
+                  <th>Hostel Residence</th>
+                  <th>Block / Floor</th>
+                  <th>Room Category</th>
+                  <th>Total Beds</th>
+                  <th>Occupied</th>
+                  <th>Vacant</th>
+                  <th>Monthly Tariff</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="roomsTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add Room Modal -->
+  <div class="modal-overlay" id="addRoomModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Configure New Room Unit</h3>
+        <button class="modal-close" onclick="HMS.closeModal('addRoomModal')">&times;</button>
+      </div>
+      <form id="addRoomForm">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Hostel Complex <span class="required">*</span></label>
+              <select id="rm_hostel" class="form-control" required>
+                <option value="Padma International">Padma International Residence</option>
+                <option value="Meghna Scholars Hall">Meghna Scholars Hall</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Block / Wing <span class="required">*</span></label>
+              <input type="text" id="rm_block" class="form-control" required placeholder="e.g. Block A / Main Wing">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Floor</label>
+              <input type="text" id="rm_floor" class="form-control" placeholder="e.g. 3rd Floor">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Room Number <span class="required">*</span></label>
+              <input type="text" id="rm_no" class="form-control" required placeholder="e.g. A-305">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Room Category <span class="required">*</span></label>
+              <select id="rm_type" class="form-control" required>
+                <option value="Single Suite">Single Suite (1 Bed)</option>
+                <option value="Double Occupancy">Double Occupancy (2 Beds)</option>
+                <option value="Triple Shared">Triple Shared (3 Beds)</option>
+                <option value="Quad Dormitory">Quad Dormitory (4 Beds)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Total Bed Capacity <span class="required">*</span></label>
+              <input type="number" id="rm_beds" class="form-control" min="1" max="6" value="2" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Monthly Seat Tariff (BDT) <span class="required">*</span></label>
+            <input type="number" id="rm_fee" class="form-control" value="4500" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="HMS.closeModal('addRoomModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save Room Unit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+      renderRooms();
+
+      HMS.filterTable('roomSearch', 'roomsTable');
+
+      document.getElementById('wingFilter').addEventListener('change', function () {
+        const wing = this.value.toLowerCase();
+        document.querySelectorAll('#roomsTableBody tr').forEach(r => {
+          const text = r.innerText.toLowerCase();
+          r.style.display = (!wing || text.includes(wing)) ? '' : 'none';
+        });
+      });
+
+      document.getElementById('addRoomForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const rooms = HMS.get('rooms') || [];
+        const beds = parseInt(document.getElementById('rm_beds').value) || 2;
+        const newR = {
+          id: 'R-' + Math.floor(100 + Math.random() * 900),
+          hostel: document.getElementById('rm_hostel').value,
+          block: document.getElementById('rm_block').value.trim(),
+          floor: document.getElementById('rm_floor').value.trim() || 'Ground Floor',
+          roomNo: document.getElementById('rm_no').value.trim(),
+          type: document.getElementById('rm_type').value,
+          totalBeds: beds,
+          occupiedBeds: 0,
+          fee: parseInt(document.getElementById('rm_fee').value) || 4500,
+          status: 'Available'
+        };
+        rooms.unshift(newR);
+        HMS.set('rooms', rooms);
+        HMS.closeModal('addRoomModal');
+        HMS.showToast('Room ' + newR.roomNo + ' created successfully!', 'success');
+        this.reset();
+        renderRooms();
+      });
+    });
+
+    function renderRooms() {
+      const rooms = HMS.get('rooms') || [];
+      const tbody = document.getElementById('roomsTableBody');
+      tbody.innerHTML = rooms.map(r => {
+        const vacant = r.totalBeds - r.occupiedBeds;
+        return `
+          <tr>
+            <td class="font-mono"><strong>${r.roomNo}</strong></td>
+            <td><strong>${r.hostel}</strong></td>
+            <td>${r.block} (${r.floor})</td>
+            <td>${r.type}</td>
+            <td class="font-mono">${r.totalBeds} Beds</td>
+            <td class="font-mono text-danger">${r.occupiedBeds}</td>
+            <td class="font-mono text-success" style="font-weight: 700;">${vacant}</td>
+            <td class="font-mono">৳ ${r.fee.toLocaleString()}</td>
+            <td>
+              <span class="badge ${vacant > 0 ? 'badge-vacant' : 'badge-occupied'}">
+                ${vacant > 0 ? 'Available' : 'Full'}
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+  </script>
+</body>
+</html>

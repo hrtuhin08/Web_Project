@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management | Admin Panel - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>ADMIN</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">📊</span> Overview</a>
+
+        <div class="nav-category">Accommodations</div>
+        <a href="boarders.html" class="sidebar-link"><span class="sidebar-icon">👥</span> Boarder Directory</a>
+        <a href="rooms.html" class="sidebar-link"><span class="sidebar-icon">🛏️</span> Room &amp; Bed Matrix</a>
+        <a href="applications.html" class="sidebar-link"><span class="sidebar-icon">📝</span> Seat Applications</a>
+
+        <div class="nav-category">Operations</div>
+        <a href="payments.html" class="sidebar-link"><span class="sidebar-icon">💳</span> Fee &amp; Billing</a>
+        <a href="complaints.html" class="sidebar-link"><span class="sidebar-icon">⚠️</span> Complaints</a>
+        <a href="notices.html" class="sidebar-link"><span class="sidebar-icon">📢</span> Notice Board</a>
+
+        <div class="nav-category">Administration</div>
+        <a href="users.html" class="sidebar-link active"><span class="sidebar-icon">🛡️</span> User Management</a>
+        <a href="reports.html" class="sidebar-link"><span class="sidebar-icon">📈</span> Reports &amp; Analytics</a>
+        <a href="settings.html" class="sidebar-link"><span class="sidebar-icon">⚙️</span> Settings</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">AD</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Admin User</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">ADMINISTRATOR</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">System Access &amp; User Accounts</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-primary btn-sm" onclick="HMS.openModal('addUserModal')">+ Add New User</button>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">User Accounts Directory</h1>
+            <p class="page-desc">Manage system credentials and access roles across administrators, managers, mess staff, and student boarders.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-toolbar">
+            <div class="search-input-group">
+              <span class="icon">🔍</span>
+              <input type="text" id="userSearchInput" class="form-control" placeholder="Search by name, email, role, or phone...">
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <select id="roleFilter" class="form-control" style="width: 160px;">
+                <option value="">All Roles</option>
+                <option value="admin">Administrators</option>
+                <option value="manager">Hostel Managers</option>
+                <option value="mess">Mess Supervisors</option>
+                <option value="boarder">Students / Boarders</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="usersTable">
+              <thead>
+                <tr>
+                  <th>User ID</th>
+                  <th>Full Name</th>
+                  <th>Email Address</th>
+                  <th>System Role</th>
+                  <th>Department</th>
+                  <th>Contact Phone</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="usersTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add User Modal -->
+  <div class="modal-overlay" id="addUserModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Create System User</h3>
+        <button class="modal-close" onclick="HMS.closeModal('addUserModal')">&times;</button>
+      </div>
+      <form id="addUserForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Full Name <span class="required">*</span></label>
+            <input type="text" id="new_user_name" class="form-control" required placeholder="Dr. / Mr. / Ms.">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address <span class="required">*</span></label>
+            <input type="email" id="new_user_email" class="form-control" required placeholder="user@uiu.ac.bd">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">System Role <span class="required">*</span></label>
+              <select id="new_user_role" class="form-control" required>
+                <option value="boarder">Boarder / Student</option>
+                <option value="manager">Hostel Manager</option>
+                <option value="mess">Mess Staff</option>
+                <option value="admin">Administrator</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Department</label>
+              <input type="text" id="new_user_dept" class="form-control" placeholder="e.g. CSE / Administration">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contact Phone Number</label>
+            <input type="tel" id="new_user_phone" class="form-control" placeholder="+8801XXXXXXXXX">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="HMS.closeModal('addUserModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save User Account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+      renderUsers();
+
+      HMS.filterTable('userSearchInput', 'usersTable');
+
+      document.getElementById('roleFilter').addEventListener('change', function () {
+        const selected = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#usersTableBody tr');
+        rows.forEach(r => {
+          const role = r.getAttribute('data-role');
+          r.style.display = (!selected || role === selected) ? '' : 'none';
+        });
+      });
+
+      document.getElementById('addUserForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const users = HMS.get('users') || [];
+        const newUser = {
+          id: 'USR-' + Math.floor(100 + Math.random() * 900),
+          name: document.getElementById('new_user_name').value.trim(),
+          email: document.getElementById('new_user_email').value.trim(),
+          role: document.getElementById('new_user_role').value,
+          dept: document.getElementById('new_user_dept').value.trim() || 'General',
+          phone: document.getElementById('new_user_phone').value.trim() || '+8801700000000',
+          status: 'Active'
+        };
+        users.unshift(newUser);
+        HMS.set('users', users);
+        HMS.closeModal('addUserModal');
+        HMS.showToast('User account ' + newUser.name + ' added successfully!', 'success');
+        this.reset();
+        renderUsers();
+      });
+    });
+
+    function renderUsers() {
+      const users = HMS.get('users') || [];
+      const tbody = document.getElementById('usersTableBody');
+      tbody.innerHTML = users.map(u => `
+        <tr data-role="${u.role.toLowerCase()}">
+          <td class="font-mono"><strong>${u.id}</strong></td>
+          <td><strong>${u.name}</strong></td>
+          <td>${u.email}</td>
+          <td>
+            <span class="badge ${u.role === 'admin' ? 'badge-purple' : u.role === 'manager' ? 'badge-info' : u.role === 'mess' ? 'badge-warning' : 'badge-secondary'}">
+              ${u.role}
+            </span>
+          </td>
+          <td>${u.dept || 'N/A'}</td>
+          <td class="font-mono">${u.phone || 'N/A'}</td>
+          <td><span class="badge badge-success">${u.status || 'Active'}</span></td>
+          <td>
+            <button class="btn btn-secondary btn-sm" onclick="deleteUser('${u.id}')" style="color: var(--danger);">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function deleteUser(id) {
+      if (confirm('Are you sure you want to deactivate and remove this user?')) {
+        let users = HMS.get('users') || [];
+        users = users.filter(u => u.id !== id);
+        HMS.set('users', users);
+        HMS.showToast('User record removed.', 'info');
+        renderUsers();
+      }
+    }
+  </script>
+</body>
+</html>

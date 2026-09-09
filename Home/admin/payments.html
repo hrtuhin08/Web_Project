@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fee &amp; Billing Ledger | Admin Panel - UIU Hostel</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand">
+          <div class="brand-icon">U</div>
+          <div class="brand-text" style="color: #ffffff;">UIU <span>ADMIN</span></div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-category">Main</div>
+        <a href="dashboard.html" class="sidebar-link"><span class="sidebar-icon">📊</span> Overview</a>
+
+        <div class="nav-category">Accommodations</div>
+        <a href="boarders.html" class="sidebar-link"><span class="sidebar-icon">👥</span> Boarder Directory</a>
+        <a href="rooms.html" class="sidebar-link"><span class="sidebar-icon">🛏️</span> Room &amp; Bed Matrix</a>
+        <a href="applications.html" class="sidebar-link"><span class="sidebar-icon">📝</span> Seat Applications</a>
+
+        <div class="nav-category">Operations</div>
+        <a href="payments.html" class="sidebar-link active"><span class="sidebar-icon">💳</span> Fee &amp; Billing</a>
+        <a href="complaints.html" class="sidebar-link"><span class="sidebar-icon">⚠️</span> Complaints</a>
+        <a href="notices.html" class="sidebar-link"><span class="sidebar-icon">📢</span> Notice Board</a>
+
+        <div class="nav-category">Administration</div>
+        <a href="users.html" class="sidebar-link"><span class="sidebar-icon">🛡️</span> User Management</a>
+        <a href="reports.html" class="sidebar-link"><span class="sidebar-icon">📈</span> Reports &amp; Analytics</a>
+        <a href="settings.html" class="sidebar-link"><span class="sidebar-icon">⚙️</span> Settings</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="user-avatar user-avatar-display">AD</div>
+          <div style="flex: 1; overflow: hidden;">
+            <div class="user-name-display" style="font-weight: 700; font-size: 0.88rem; color: #fff;">Admin User</div>
+            <div class="user-role-display" style="font-size: 0.75rem; color: #94a3b8;">ADMINISTRATOR</div>
+          </div>
+          <button type="button" onclick="HMS.logout()" title="Sign Out" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h2 style="font-size: 1.15rem; font-weight: 700;">Financial Collections &amp; Invoices</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-primary btn-sm" onclick="HMS.openModal('createInvoiceModal')">+ Create Invoice</button>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Fee &amp; Payment Ledger</h1>
+            <p class="page-desc">Track room rents, mess meal deposits, utility surcharges, and payment receipts.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-toolbar">
+            <div class="search-input-group">
+              <span class="icon">🔍</span>
+              <input type="text" id="paySearch" class="form-control" placeholder="Search invoice, student name, ID...">
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <select id="payStatusFilter" class="form-control" style="width: 150px;">
+                <option value="">All Statuses</option>
+                <option value="Paid">Paid</option>
+                <option value="Due">Due / Pending</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="paymentsTable">
+              <thead>
+                <tr>
+                  <th>Invoice ID</th>
+                  <th>Student Name</th>
+                  <th>Student ID</th>
+                  <th>Room</th>
+                  <th>Fee Description</th>
+                  <th>Amount</th>
+                  <th>Billing Date</th>
+                  <th>Channel</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="paymentsTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Create Invoice Modal -->
+  <div class="modal-overlay" id="createInvoiceModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Generate Billing Invoice</h3>
+        <button class="modal-close" onclick="HMS.closeModal('createInvoiceModal')">&times;</button>
+      </div>
+      <form id="createInvoiceForm">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Student Name <span class="required">*</span></label>
+              <input type="text" id="inv_name" class="form-control" required placeholder="Student Name">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Student ID <span class="required">*</span></label>
+              <input type="text" id="inv_sid" class="form-control" required placeholder="011...">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Room Number</label>
+              <input type="text" id="inv_room" class="form-control" placeholder="e.g. A-302">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Invoice Amount (BDT) <span class="required">*</span></label>
+              <input type="number" id="inv_amount" class="form-control" required value="4500">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Billing Purpose <span class="required">*</span></label>
+            <input type="text" id="inv_type" class="form-control" required placeholder="e.g. September Room Rent &amp; Mess Advance">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="HMS.closeModal('createInvoiceModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Issue Invoice</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      HMS.setupShell();
+      renderPayments();
+
+      HMS.filterTable('paySearch', 'paymentsTable');
+
+      document.getElementById('payStatusFilter').addEventListener('change', function () {
+        const val = this.value.toLowerCase();
+        document.querySelectorAll('#paymentsTableBody tr').forEach(r => {
+          const st = r.getAttribute('data-status');
+          r.style.display = (!val || st === val) ? '' : 'none';
+        });
+      });
+
+      document.getElementById('createInvoiceForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const payments = HMS.get('payments') || [];
+        const newInv = {
+          id: 'INV-2026-0' + Math.floor(10 + Math.random() * 90),
+          studentName: document.getElementById('inv_name').value.trim(),
+          studentId: document.getElementById('inv_sid').value.trim(),
+          room: document.getElementById('inv_room').value.trim() || 'Unassigned',
+          type: document.getElementById('inv_type').value.trim(),
+          amount: parseInt(document.getElementById('inv_amount').value) || 4500,
+          date: new Date().toISOString().split('T')[0],
+          method: 'Pending',
+          status: 'Due'
+        };
+        payments.unshift(newInv);
+        HMS.set('payments', payments);
+        HMS.closeModal('createInvoiceModal');
+        HMS.showToast('Invoice ' + newInv.id + ' generated successfully!', 'success');
+        this.reset();
+        renderPayments();
+      });
+    });
+
+    function renderPayments() {
+      const payments = HMS.get('payments') || [];
+      const tbody = document.getElementById('paymentsTableBody');
+      tbody.innerHTML = payments.map(p => `
+        <tr data-status="${p.status.toLowerCase()}">
+          <td class="font-mono"><strong>${p.id}</strong></td>
+          <td><strong>${p.studentName}</strong></td>
+          <td class="font-mono">${p.studentId}</td>
+          <td><span class="badge badge-info">${p.room}</span></td>
+          <td>${p.type}</td>
+          <td class="font-mono" style="font-weight: 700;">৳ ${p.amount.toLocaleString()}</td>
+          <td class="font-mono">${p.date}</td>
+          <td style="font-size: 0.85rem;">${p.method}</td>
+          <td>
+            <span class="badge ${p.status === 'Paid' ? 'badge-success' : 'badge-danger'}">
+              ${p.status}
+            </span>
+          </td>
+          <td>
+            ${p.status === 'Due' ? `
+              <button class="btn btn-primary btn-sm" onclick="markPaid('${p.id}')">Mark Paid</button>
+            ` : `
+              <button class="btn btn-secondary btn-sm" onclick="HMS.showToast('Printing official receipt for ${p.id}...', 'info')">Receipt</button>
+            `}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function markPaid(id) {
+      let payments = HMS.get('payments') || [];
+      payments = payments.map(p => {
+        if (p.id === id) {
+          p.status = 'Paid';
+          p.method = 'Hostel Cash Desk';
+        }
+        return p;
+      });
+      HMS.set('payments', payments);
+      HMS.showToast('Invoice ' + id + ' marked as Paid!', 'success');
+      renderPayments();
+    }
+  </script>
+</body>
+</html>

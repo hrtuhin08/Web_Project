@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Seat Registration | United International University Hostel</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-wrapper">
+
+  <div class="auth-card auth-card-wide">
+    <div class="auth-header">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">U</div>
+        <div class="brand-text">UIU <span>HOSTEL</span></div>
+      </a>
+      <h2 style="font-size: 1.6rem; margin-top: 1rem;">Hostel Seat Application</h2>
+      <p style="font-size: 0.88rem; margin-top: 0.25rem;">Apply for on-campus accommodation for Academic Year 2026-2027</p>
+    </div>
+
+    <form id="regForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="reg_name">Full Name <span class="required">*</span></label>
+          <input type="text" id="reg_name" class="form-control" required placeholder="e.g. Mahfuzur Rahman">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg_id">Student ID <span class="required">*</span></label>
+          <input type="text" id="reg_id" class="form-control" required placeholder="011221099">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="reg_email">University Email <span class="required">*</span></label>
+          <input type="email" id="reg_email" class="form-control" required placeholder="name@uiu.ac.bd">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg_phone">Personal Phone <span class="required">*</span></label>
+          <input type="tel" id="reg_phone" class="form-control" required placeholder="+8801XXXXXXXXX">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="reg_dept">Academic Department <span class="required">*</span></label>
+          <select id="reg_dept" class="form-control" required>
+            <option value="">-- Select Department --</option>
+            <option value="CSE">Computer Science &amp; Engineering (CSE)</option>
+            <option value="EEE">Electrical &amp; Electronic Engineering (EEE)</option>
+            <option value="BBA">School of Business &amp; Economics (BBA)</option>
+            <option value="Data Science">Data Science</option>
+            <option value="Pharmacy">Department of Pharmacy</option>
+            <option value="Civil">Civil Engineering</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg_gender">Gender <span class="required">*</span></label>
+          <select id="reg_gender" class="form-control" required>
+            <option value="Male">Male (Padma Hall)</option>
+            <option value="Female">Female (Meghna Hall)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="reg_hostel">Hostel Wing Preference <span class="required">*</span></label>
+          <select id="reg_hostel" class="form-control" required>
+            <option value="Padma International">Padma International Residence (Block A / B)</option>
+            <option value="Meghna Scholars Hall">Meghna Scholars Hall (Main Wing)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg_room_type">Room Type Preference <span class="required">*</span></label>
+          <select id="reg_room_type" class="form-control" required>
+            <option value="Double Occupancy">Double Occupancy (৳ 4,500/mo)</option>
+            <option value="Single Suite">Single Suite (৳ 7,500/mo)</option>
+            <option value="Triple Shared">Triple Shared (৳ 3,500/mo)</option>
+            <option value="Quad Dormitory">Quad Dormitory (৳ 2,800/mo)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="reg_guardian">Guardian Name &amp; Emergency Phone <span class="required">*</span></label>
+          <input type="text" id="reg_guardian" class="form-control" required placeholder="Guardian Name (+8801...)">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg_address">Permanent Home Address <span class="required">*</span></label>
+          <input type="text" id="reg_address" class="form-control" required placeholder="District, Division">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="reg_pass">Password <span class="required">*</span></label>
+          <input type="password" id="reg_pass" class="form-control" required placeholder="Minimum 6 characters">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg_pass_conf">Confirm Password <span class="required">*</span></label>
+          <input type="password" id="reg_pass_conf" class="form-control" required placeholder="Confirm your password">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-check">
+          <input type="checkbox" id="reg_agree" required checked>
+          <span>I agree to abide by the UIU Hostel Code of Conduct, dining policies, and 9:00 PM curfew rules.</span>
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block btn-lg" id="regSubmitBtn">
+        Submit Seat Application
+      </button>
+    </form>
+
+    <div style="text-align: center; margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: 0.9rem;">
+      Already have an approved room or account? 
+      <a href="login.html" style="font-weight: 700;">Sign In</a>
+    </div>
+
+    <div style="text-align: center; margin-top: 1rem;">
+      <a href="index.html" style="font-size: 0.85rem; color: var(--text-muted);">← Back to Public Homepage</a>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+  <script>
+    document.getElementById('regForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const pass = document.getElementById('reg_pass').value;
+      const passConf = document.getElementById('reg_pass_conf').value;
+
+      if (pass !== passConf) {
+        HMS.showToast('Passwords do not match! Please check again.', 'danger');
+        return;
+      }
+
+      const name = document.getElementById('reg_name').value.trim();
+      const studentId = document.getElementById('reg_id').value.trim();
+      const email = document.getElementById('reg_email').value.trim();
+      const dept = document.getElementById('reg_dept').value;
+      const hostel = document.getElementById('reg_hostel').value;
+      const roomType = document.getElementById('reg_room_type').value;
+
+      // Add to mock applications list in LocalStorage
+      const apps = HMS.get('applications');
+      apps.unshift({
+        id: 'APP-' + Math.floor(200 + Math.random() * 800),
+        studentName: name,
+        studentId: studentId,
+        dept: dept,
+        hostel: hostel,
+        roomType: roomType,
+        applyDate: new Date().toISOString().split('T')[0],
+        status: 'Pending'
+      });
+      HMS.set('applications', apps);
+
+      // Disable button
+      const btn = document.getElementById('regSubmitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Submitting Application...';
+
+      HMS.showToast('Application submitted successfully! Your tracking ID is ' + apps[0].id, 'success');
+
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 1500);
+    });
+  </script>
+</body>
+</html>
